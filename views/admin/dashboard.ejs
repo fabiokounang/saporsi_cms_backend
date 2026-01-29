@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard • Saporsi CMS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f4f1;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#ece7e1;
+      --accent:#ff6a2a;
+      --accent2:#ff3d3d;
+      --shadow: 0 18px 60px rgba(16,24,40,.10);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(255,106,42,.12), transparent 60%),
+        radial-gradient(900px 500px at 85% 90%, rgba(255,61,61,.10), transparent 60%),
+        linear-gradient(180deg, #fbfaf8, var(--bg));
+      min-height:100vh;
+    }
+
+    .shell{
+      display:grid;
+      grid-template-columns: 260px 1fr;
+      min-height:100vh;
+    }
+    @media (max-width: 980px){
+      .shell{grid-template-columns: 1fr}
+      aside{display:none}
+    }
+
+    /* ===== Sidebar ===== */
+    aside{
+      padding:18px;
+      border-right:1px solid rgba(236,231,225,.9);
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(8px);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.75);
+      border:1px solid rgba(255,255,255,.8);
+      box-shadow: 0 10px 30px rgba(16,24,40,.06);
+    }
+    .logo{
+      width:42px;height:42px;border-radius:14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 12px 26px rgba(255,106,42,.25);
+    }
+    .brand h1{margin:0;font-size:14px;letter-spacing:.3px}
+    .brand p{margin:2px 0 0 0;font-size:12px;color:var(--muted)}
+
+    nav{margin-top:16px}
+    .navItem{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:11px 12px;
+      border-radius: 14px;
+      color:#374151;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:600;
+      border:1px solid transparent;
+      transition:.15s ease;
+    }
+    .navItem:hover{
+      background: rgba(255,255,255,.8);
+      border-color: rgba(236,231,225,.9);
+    }
+    .navItem.active{
+      background: rgba(255,106,42,.12);
+      border-color: rgba(255,106,42,.25);
+      color:#111827;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: rgba(17,24,39,.35);
+    }
+    .navItem.active .dot{
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+    }
+
+    /* ===== Main ===== */
+    main{padding:18px 18px 28px}
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:14px 16px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.8);
+      border:1px solid rgba(236,231,225,.9);
+      box-shadow: 0 12px 34px rgba(16,24,40,.06);
+    }
+    .topbar h2{margin:0;font-size:16px}
+    .topbar .sub{color:var(--muted);font-size:12px;margin-top:2px}
+
+    .userBox{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.9);
+      border:1px solid rgba(236,231,225,.9);
+    }
+    .avatar{
+      width:34px;height:34px;border-radius:999px;
+      background: rgba(17,24,39,.08);
+      display:grid;place-items:center;
+      font-weight:800;color:#374151;
+    }
+    .userMeta{line-height:1.2}
+    .userMeta .name{font-size:12px;font-weight:700}
+    .userMeta .role{font-size:11px;color:var(--muted)}
+
+    .logout{
+      margin-left:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:700;
+      font-size:12px;
+      color:#fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 14px 26px rgba(255,106,42,.20);
+    }
+
+    /* ===== Content ===== */
+    .intro{
+      margin-top:18px;
+      max-width:720px;
+    }
+    .intro h3{
+      margin:0 0 6px 0;
+      font-size:18px;
+    }
+    .intro p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:13px;
+    }
+
+    .grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+    }
+    .card{
+      grid-column: span 4;
+      background: rgba(255,255,255,.9);
+      border:1px solid rgba(236,231,225,.9);
+      border-radius: var(--radius);
+      padding:16px;
+      box-shadow: 0 12px 30px rgba(16,24,40,.06);
+      transition:.15s ease;
+      text-decoration:none;
+      color:inherit;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(16,24,40,.08);
+      border-color: rgba(255,106,42,.35);
+    }
+    @media (max-width: 980px){
+      .card{grid-column: span 12;}
+    }
+
+    .card h4{
+      margin:0 0 6px 0;
+      font-size:14px;
+    }
+    .card p{
+      margin:0;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+    .tag{
+      display:inline-block;
+      margin-top:10px;
+      font-size:11px;
+      font-weight:700;
+      color:#b45309;
+      background: rgba(255,106,42,.15);
+      padding:6px 10px;
+      border-radius:999px;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- Sidebar -->
+    <aside>
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>SAPORSI CMS</h1>
+          <p>Company Profile Manager</p>
+        </div>
+      </div>
+
+      <!-- <nav>
+        <a class="navItem active" href="/admin">
+          <span class="dot"></span> Dashboard
+        </a>
+        <a class="navItem" href="/admin/navbar">
+          <span class="dot"></span> Navbar
+        </a>
+        <a class="navItem" href="/admin/home">
+          <span class="dot"></span> Home
+        </a>
+        <a class="navItem" href="/admin/about">
+          <span class="dot"></span> About Us
+        </a>
+        <a class="navItem" href="/admin/gallery">
+          <span class="dot"></span> Gallery
+        </a>
+        <a class="navItem" href="/admin/services">
+          <span class="dot"></span> Services
+        </a>
+      </nav> -->
+    </aside>
+
+    <!-- Main -->
+    <main>
+      <header class="topbar">
+        <div>
+          <h2>Dashboard</h2>
+          <div class="sub">Content Management System</div>
+        </div>
+
+        <div style="display:flex;align-items:center;">
+          <div class="userBox">
+            <div class="avatar"><%= (user.name)[0].toUpperCase() %></div>
+            <div class="userMeta">
+              <div class="name"><%= user.name %></div>
+              <div class="role">(<%= user.role %>)</div>
+            </div>
+          </div>
+          <a class="logout" href="/auth/logout">Logout</a>
+        </div>
+      </header>
+
+      <section class="intro">
+        <h3>Kelola Tampilan Website Saporsi</h3>
+        <p>
+          Dashboard ini digunakan khusus untuk mengatur konten company profile seperti
+          navigasi, halaman utama, tentang kami, layanan, dan galeri.
+          Tidak ada modul stok atau transaksi di sini.
+        </p>
+      </section>
+
+      <section class="grid">
+        <a href="/admin/navbar" class="card">
+          <h4>Navbar</h4>
+          <p>Atur menu navigasi, urutan, dan label bahasa.</p>
+          <span class="tag">Navigation</span>
+        </a>
+
+        <a href="/admin/hero" class="card">
+          <h4>Home</h4>
+          <p>Konten landing page, hero section, dan highlight utama.</p>
+          <span class="tag">Landing Page</span>
+        </a>
+
+        <a href="/admin/about" class="card">
+          <h4>About Us</h4>
+          <p>Profil perusahaan, visi, dan cerita Saporsi.</p>
+          <span class="tag">Company</span>
+        </a>
+
+        <a href="/admin/services" class="card">
+          <h4>Services</h4>
+          <p>Daftar layanan dan solusi yang ditawarkan.</p>
+          <span class="tag">Content</span>
+        </a>
+
+        <a href="/admin/gallery" class="card">
+          <h4>Gallery</h4>
+          <p>Kelola foto dan dokumentasi kegiatan.</p>
+          <span class="tag">Media</span>
+        </a>
+
+        <a href="/admin/locations" class="card">
+          <h4>Location</h4>
+          <p>Kelola lokasi.</p>
+          <span class="tag">Lokasi</span>
+        </a>
+
+        <a href="/admin/partners" class="card">
+          <h4>Partners</h4>
+          <p>Kelola mitra.</p>
+          <span class="tag">Mitra</span>
+        </a>
+        <a href="/admin/footer" class="card">
+          <h4>Footer</h4>
+          <p>Kelola Footer.</p>
+          <span class="tag">Footer</span>
+        </a>
+      </section>
+    </main>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Partners • Saporsi CMS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{--bg:#f6f4f1;--text:#111827;--muted:#6b7280;--line:#ece7e1;--accent:#ff6a2a;--accent2:#ff3d3d;--radius:18px}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text);
+      background:radial-gradient(900px 500px at 15% 10%, rgba(255,106,42,.12), transparent 60%),
+               radial-gradient(900px 500px at 85% 90%, rgba(255,61,61,.10), transparent 60%),
+               linear-gradient(180deg,#fbfaf8,var(--bg));min-height:100vh}
+    .shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+    @media (max-width:980px){.shell{grid-template-columns:1fr}aside{display:none}}
+    aside{padding:18px;border-right:1px solid rgba(236,231,225,.9);background:rgba(255,255,255,.55);backdrop-filter:blur(8px)}
+    .brand{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.8)}
+    .logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+    .brand h1{margin:0;font-size:14px}.brand p{margin:2px 0 0 0;font-size:12px;color:var(--muted)}
+    nav{margin-top:16px}
+    .navItem{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;color:#374151;text-decoration:none;font-size:13px;font-weight:600;border:1px solid transparent;transition:.15s}
+    .navItem:hover{background:rgba(255,255,255,.8);border-color:rgba(236,231,225,.9)}
+    .navItem.active{background:rgba(255,106,42,.12);border-color:rgba(255,106,42,.25);color:#111827}
+    .dot{width:8px;height:8px;border-radius:999px;background:rgba(17,24,39,.35)}
+    .navItem.active .dot{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+
+    main{padding:18px 18px 28px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border-radius:var(--radius);
+      background:rgba(255,255,255,.8);border:1px solid rgba(236,231,225,.9)}
+    .topbar h2{margin:0;font-size:16px}
+    .topbar .sub{color:var(--muted);font-size:12px;margin-top:2px}
+    .userBox{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.9);border:1px solid rgba(236,231,225,.9)}
+    .avatar{width:34px;height:34px;border-radius:999px;background:rgba(17,24,39,.08);display:grid;place-items:center;font-weight:800;color:#374151}
+    .userMeta{line-height:1.2}
+    .userMeta .name{font-size:12px;font-weight:700}
+    .userMeta .role{font-size:11px;color:var(--muted)}
+    .logout{margin-left:10px;padding:10px 14px;border-radius:999px;text-decoration:none;font-weight:700;font-size:12px;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+
+    .content{margin-top:16px;display:grid;gap:14px}
+    .card{background:rgba(255,255,255,.9);border:1px solid rgba(236,231,225,.9);border-radius:var(--radius);padding:16px}
+    .cardHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .cardHead h3{margin:0;font-size:14px}
+    .cardHead p{margin:6px 0 0 0;color:var(--muted);font-size:12px;line-height:1.6}
+
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:980px){.grid2{grid-template-columns:1fr}}
+
+    label{display:block;font-size:12px;color:#374151;margin:0 0 7px 2px}
+    input, textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:14px;outline:none;font-family:inherit;font-size:13px;background:#fff}
+    textarea{min-height:90px;resize:vertical}
+
+    .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
+    .btn{border:1px solid rgba(236,231,225,.9);background:#fff;padding:10px 12px;border-radius:14px;cursor:pointer;font-weight:800;font-family:inherit;font-size:12px}
+    .btnPrimary{border:0;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+    .btnDanger{border:1px solid rgba(254,205,211,.9);background:#fff1f2;color:#9f1239}
+
+    .itemsGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    @media (max-width:1100px){.itemsGrid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    @media (max-width:640px){.itemsGrid{grid-template-columns:1fr;}}
+    .itemCard{border:1px solid rgba(236,231,225,.9);border-radius:16px;background:#fff;overflow:hidden}
+    .itemBody{padding:12px}
+    .thumbWrap{height:150px;display:grid;place-items:center;background:rgba(246,244,241,.75);border-bottom:1px solid rgba(236,231,225,.8)}
+    .thumb{max-height:70px;max-width:70%;object-fit:contain;display:block}
+    .muted{color:var(--muted);font-size:12px;line-height:1.5}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .mini{width:110px}
+    .file{padding:10px}
+    .sep{height:1px;background:rgba(236,231,225,.9);margin:10px 0}
+  </style>
+</head>
+
+<body>
+<div class="shell">
+  <aside>
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <h1>SAPORSI CMS</h1>
+        <p>Company Profile Manager</p>
+      </div>
+    </div>
+
+    <!-- <nav>
+      <a class="navItem" href="/admin"><span class="dot"></span> Dashboard</a>
+      <a class="navItem" href="/admin/navbar"><span class="dot"></span> Navbar</a>
+      <a class="navItem" href="/admin/hero"><span class="dot"></span> Hero</a>
+      <a class="navItem" href="/admin/about"><span class="dot"></span> About Us</a>
+      <a class="navItem" href="/admin/services"><span class="dot"></span> Services</a>
+      <a class="navItem" href="/admin/gallery"><span class="dot"></span> Gallery</a>
+      <a class="navItem" href="/admin/locations"><span class="dot"></span> Locations</a>
+      <a class="navItem active" href="/admin/partners"><span class="dot"></span> Partners</a>
+    </nav> -->
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div>
+        <h2>Mitra</h2>
+        <div class="sub">Kelola header + upload logo partner + nama (ID/EN).</div>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <a class="logout" href="/admin">Back to Dashboard</a> &nbsp;&nbsp;
+        <div class="userBox">
+          <div class="avatar"><%= (user.name || 'A')[0].toUpperCase() %></div>
+          <div class="userMeta">
+            <div class="name"><%= user.name %></div>
+            <div class="role"><%= user.role %></div>
+          </div>
+        </div>
+        <a class="logout" href="/auth/logout">Logout</a>
+      </div>
+    </header>
+
+    <section class="content">
+
+      <!-- HEADER -->
+      <div class="card">
+        <div class="cardHead">
+          <div>
+            <h3>Partners Header</h3>
+            <p>Badge, title, subtitle, dan CTA untuk section Mitra.</p>
+          </div>
+        </div>
+
+        <form method="post" action="/admin/partners/header">
+          <div class="grid2">
+            <div>
+              <label>Badge (ID)</label>
+              <input name="badge_id" value="<%= header?.badge_id || '' %>">
+            </div>
+            <div>
+              <label>Badge (EN)</label>
+              <input name="badge_en" value="<%= header?.badge_en || '' %>">
+            </div>
+
+            <div>
+              <label>Title (ID)</label>
+              <input name="title_id" value="<%= header?.title_id || '' %>">
+            </div>
+            <div>
+              <label>Title (EN)</label>
+              <input name="title_en" value="<%= header?.title_en || '' %>">
+            </div>
+
+            <div>
+              <label>Subtitle (ID)</label>
+              <textarea name="subtitle_id"><%= header?.subtitle_id || '' %></textarea>
+            </div>
+            <div>
+              <label>Subtitle (EN)</label>
+              <textarea name="subtitle_en"><%= header?.subtitle_en || '' %></textarea>
+            </div>
+
+            <div>
+              <label>CTA Label (ID)</label>
+              <input name="cta_label_id" value="<%= header?.cta_label_id || '' %>">
+            </div>
+            <div>
+              <label>CTA Label (EN)</label>
+              <input name="cta_label_en" value="<%= header?.cta_label_en || '' %>">
+            </div>
+
+            <div>
+              <label>CTA URL</label>
+              <input name="cta_url" value="<%= header?.cta_url || '' %>">
+              <div class="muted" style="margin:6px 2px 0;">Contoh: #contacthome atau https://wa.me/62xxx</div>
+            </div>
+            <div></div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btnPrimary" type="submit">Simpan Header</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ADD PARTNER -->
+      <div class="card">
+        <div class="cardHead">
+          <div>
+            <h3>Add Partner (Upload)</h3>
+            <p>Upload logo + isi nama partner. Kamu bisa atur urutan dengan sort order.</p>
+          </div>
+        </div>
+
+        <form method="post" action="/admin/partners/add" enctype="multipart/form-data">
+          <div class="row">
+            <div>
+              <label>Nama Partner (ID)</label>
+              <input name="name_id" placeholder="FreshBite" required>
+            </div>
+            <div>
+              <label>Nama Partner (EN)</label>
+              <input name="name_en" placeholder="FreshBite" required>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:10px;">
+            <div>
+              <label>Sort Order</label>
+              <input class="mini" name="sort_order" placeholder="1">
+            </div>
+            <div>
+              <label>Logo (Image)</label>
+              <input class="file" type="file" name="logo" accept="image/*" required>
+              <div class="muted">Max 3MB • JPG/PNG/WebP • Path: /public/uploads/partners/</div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btnPrimary" type="submit">Upload Partner</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ITEMS -->
+      <div class="card">
+        <div class="cardHead">
+          <div>
+            <h3>Partner List</h3>
+            <p>Edit nama, ganti logo (optional), atur order, active, dan delete.</p>
+          </div>
+        </div>
+
+        <div class="itemsGrid">
+          <% (items || []).forEach((p) => { %>
+            <div class="itemCard">
+              <div class="thumbWrap">
+                <% if (p.logo_path) { %>
+                  <img class="thumb" src="<%= p.logo_path %>" alt="partner-logo">
+                <% } else { %>
+                  <div class="muted">No Logo</div>
+                <% } %>
+              </div>
+
+              <div class="itemBody">
+                <form method="post" action="/admin/partners/<%= p.id %>" enctype="multipart/form-data">
+                  <div class="row">
+                    <div>
+                      <label>Nama (ID)</label>
+                      <input name="name_id" value="<%= p.name_id || '' %>">
+                    </div>
+                    <div>
+                      <label>Nama (EN)</label>
+                      <input name="name_en" value="<%= p.name_en || '' %>">
+                    </div>
+                  </div>
+
+                  <div class="row" style="margin-top:10px;">
+                    <div>
+                      <label>Order</label>
+                      <input class="mini" name="sort_order" value="<%= p.sort_order ?? 0 %>">
+                    </div>
+                    <div>
+                      <label>Active (1/0)</label>
+                      <input class="mini" name="is_active" value="<%= p.is_active ? 1 : 0 %>">
+                    </div>
+                  </div>
+
+                  <input type="hidden" name="current_logo_path" value="<%= p.logo_path || '' %>">
+
+                  <div class="sep"></div>
+
+                  <div>
+                    <label>Replace Logo (optional)</label>
+                    <input class="file" type="file" name="logo" accept="image/*">
+                    <div class="muted">Kalau tidak upload, logo tetap.</div>
+                  </div>
+
+                  <div class="actions">
+                    <button class="btn btnPrimary" type="submit">Save</button>
+                    <button type="button" class="btn btnDanger js-del" data-id="<%= p.id %>">Delete</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+
+    </section>
+  </main>
+</div>
+
+<script>
+  document.addEventListener("click", function(e){
+    const btn = e.target.closest(".js-del");
+    if (!btn) return;
+    const id = btn.dataset.id;
+    if (!confirm("Hapus partner ini?")) return;
+    fetch(`/admin/partners/${id}/delete`, { method:"POST" }).then(()=>location.reload());
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<nav class="topnav">
+  <div class="left">
+    <img
+      src="<%= navbar.settings.logo_path || '/public/img/logo.png' %>"
+      alt="Saporsi"
+      style="height:36px"
+    />
+
+  </div>
+
+  <div class="center">
+    <% navbar.items.forEach((it) => { %>
+      <a href="<%= it.url %>"><%= (lang === 'en') ? it.label_en : it.label_id %></a>
+    <% }) %>
+  </div>
+
+  <div class="right">
+    <% if (navbar.settings.show_language_toggle) { %>
+      <a href="/?lang=id" class="<%= lang === 'id' ? 'active' : '' %>">ID</a>
+      <a href="/?lang=en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
+    <% } %>
+
+    <a class="cta" href="<%= navbar.settings.cta_url %>">
+      <%= (lang === 'en') ? navbar.settings.cta_label_en : navbar.settings.cta_label_id %>
+    </a>
+  </div>
+</nav>

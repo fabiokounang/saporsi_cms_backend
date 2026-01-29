@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login • Saporsi CMS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f4f1;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --line:#ece7e1;
+      --accent:#ff6a2a;
+      --accent2:#ff3d3d;
+      --shadow: 0 18px 60px rgba(16,24,40,.10);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(255,106,42,.16), transparent 60%),
+        radial-gradient(900px 500px at 85% 90%, rgba(255,61,61,.12), transparent 60%),
+        linear-gradient(180deg, #fbfaf8, var(--bg));
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .wrap{
+      width:min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    @media (max-width: 860px){
+      .wrap{grid-template-columns:1fr}
+      .left{display:none}
+    }
+
+    .left{
+      background: rgba(255,255,255,.55);
+      border:1px solid rgba(255,255,255,.6);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:26px;
+      position:relative;
+      overflow:hidden;
+    }
+    .left:before{
+      content:"";
+      position:absolute;
+      inset:-80px -120px auto auto;
+      width:280px;height:280px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,106,42,.35), transparent 60%);
+      filter: blur(0px);
+      transform: rotate(15deg);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      position:relative;
+      z-index:2;
+    }
+    .logo{
+      width:44px;height:44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 24px rgba(255,106,42,.25);
+    }
+    .brand h1{
+      font-size:18px;
+      margin:0;
+      letter-spacing:.2px;
+    }
+    .brand p{
+      margin:2px 0 0 0;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .hero{
+      margin-top:28px;
+      position:relative;
+      z-index:2;
+    }
+    .hero h2{
+      margin:0 0 10px 0;
+      font-size:30px;
+      line-height:1.15;
+    }
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:14px;
+      max-width: 44ch;
+    }
+    .chips{
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .chip{
+      padding:10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.75);
+      border:1px solid rgba(236,231,225,.9);
+      font-size:12px;
+      color:#374151;
+    }
+
+    .card{
+      background: var(--card);
+      border:1px solid rgba(236,231,225,.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:22px;
+    }
+    .cardHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+    }
+    .cardHead .title{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .cardHead h3{
+      margin:0;
+      font-size:18px;
+    }
+    .cardHead span{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .err{
+      background: #fff1f2;
+      border:1px solid #fecdd3;
+      color:#9f1239;
+      padding:12px 12px;
+      border-radius: 14px;
+      margin:12px 0 14px;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    form{margin-top:10px}
+    .field{margin-bottom:12px}
+    label{
+      display:block;
+      font-size:12px;
+      color:#374151;
+      margin:0 0 7px 2px;
+    }
+    .input{
+      position:relative;
+    }
+    .input svg{
+      position:absolute;
+      left:12px;
+      top:50%;
+      transform:translateY(-50%);
+      width:18px;
+      height:18px;
+      opacity:.55;
+    }
+    input{
+      width:100%;
+      padding:12px 12px 12px 40px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      outline:none;
+      font-family:inherit;
+      font-size:14px;
+      background:#fff;
+      transition: .15s ease;
+    }
+    input:focus{
+      border-color: rgba(255,106,42,.55);
+      box-shadow: 0 0 0 5px rgba(255,106,42,.12);
+    }
+
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:10px;
+    }
+    .hint{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .btn{
+      width:100%;
+      border:0;
+      cursor:pointer;
+      padding:12px 14px;
+      border-radius: 14px;
+      font-weight:700;
+      font-family:inherit;
+      font-size:14px;
+      color:#fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 14px 30px rgba(255,106,42,.25);
+      transition: transform .12s ease, filter .12s ease;
+      margin-top:14px;
+    }
+    .btn:hover{transform: translateY(-1px); filter:brightness(1.02)}
+    .btn:active{transform: translateY(0px); filter:brightness(.98)}
+
+    .footer{
+      margin-top:14px;
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <aside class="left">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>SAPORSI <span style="color:var(--accent);font-weight:800">CMS</span></h1>
+          <p>By Kyojin • Admin Panel</p>
+        </div>
+      </div>
+
+      <div class="hero">
+        <h2>Kelola Konten saporsi.com</h2>
+        <p>
+          Dashboard yang rapi bikin content management system lebih rapih dan teratur
+        </p>
+
+        <div class="chips">
+          <div class="chip">⚡ Fast Admin</div>
+          <div class="chip">🔒 Secure Login</div>
+          <div class="chip">📊 CMS</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="card" role="main">
+      <div class="cardHead">
+        <div class="title">
+          <h3>Login</h3>
+          <span>Masuk untuk mengakses CMS Saporsi</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);text-align:right">
+          <div style="font-weight:700;color:#111827">SAPORSI</div>
+          <div>Admin Panel</div>
+        </div>
+      </div>
+
+      <% if (error) { %>
+        <div class="err"><%= error %></div>
+      <% } %>
+
+      <form method="post" action="/auth/login" autocomplete="on">
+        <div class="field">
+          <label>Email</label>
+          <div class="input">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16v16H4z" opacity=".15"/><path d="M4 6l8 6 8-6" stroke-width="2"/></svg>
+            <input name="email" type="email" value="<%= email || '' %>" placeholder="admin@saporsi.com" autocomplete="email" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Password</label>
+          <div class="input">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 11V8a5 5 0 0110 0v3" stroke-width="2"/><path d="M6 11h12v9H6z" stroke-width="2"/></svg>
+            <input name="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="hint">Gunakan akun admin yang sudah dibuat.</div>
+        </div>
+
+        <button class="btn" type="submit">Masuk</button>
+
+        <div class="footer">
+          © <%= new Date().getFullYear() %> Saporsi By Kyojin
+        </div>
+      </form>
+    </main>
+
+  </div>
+</body>
+</html>
