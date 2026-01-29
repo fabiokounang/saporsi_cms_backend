@@ -18,6 +18,8 @@ const ALLOWED_ORIGINS = new Set([
   "http://127.0.0.1:8080",
   "http://localhost:3000",
   "http://127.0.0.1:3000",
+  "https://saporsi.com",
+  "https://www.saporsi.com"
   // kalau kamu kadang akses FE lewat netlify subdomain:
   // "https://kenaritower.netlify.app",
 ]);
