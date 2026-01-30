@@ -31,6 +31,7 @@ module.exports = {
   navbarUpload: makeUploader("navbar"),
   heroUpload: makeUploader("hero"),
   aboutUpload: makeUploader("about"),
+  serviceUpload: makeUploader("services"),
   galleryUpload: makeUploader("gallery"),
   partnerUpload: makeUploader("partners")
 };

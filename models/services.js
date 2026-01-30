@@ -54,7 +54,7 @@ async function updateServiceItems(items) {
       `UPDATE site_services_items
        SET title_id=?, title_en=?, description_id=?, description_en=?,
            icon_key=?, accent=?, sort_order=?, is_active=?
-       WHERE id=? LIMIT 1`,
+       WHERE id=?`,
       [
         it.title_id || "",
         it.title_en || "",

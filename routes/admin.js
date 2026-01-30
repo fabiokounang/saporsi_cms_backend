@@ -58,7 +58,7 @@ const {
   deleteQuickLink,
 } = require("../controllers/footer");
 
-const { navbarUpload, heroUpload, galleryUpload, partnerUpload } = require("../utils/uploader");
+const { navbarUpload, heroUpload, galleryUpload, partnerUpload, serviceUpload } = require("../utils/uploader");
 
 
 router.get("/", requireAuthJWT, (req, res) => {
@@ -104,7 +104,7 @@ router.get("/services", requireAuthJWT, renderServices);
 router.post("/services/header", requireAuthJWT, saveServicesHeader);
 
 router.post("/services/add", requireAuthJWT, addService);
-router.post("/services/save", requireAuthJWT, saveServiceItems);
+router.post("/services/save", requireAuthJWT, serviceUpload.any(), saveServiceItems);
 router.post("/services/:id/delete", requireAuthJWT, deleteService);
 
 // GALLERY

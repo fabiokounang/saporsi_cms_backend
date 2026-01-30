@@ -64,29 +64,48 @@ async function saveServiceItems(req, res) {
     const title_en = [].concat(req.body.title_en || []);
     const desc_id = [].concat(req.body.description_id || []);
     const desc_en = [].concat(req.body.description_en || []);
-    const icon_key = [].concat(req.body.icon_key || []);
     const accent = [].concat(req.body.accent || []);
     const sort_order = [].concat(req.body.sort_order || []);
     const actives = [].concat(req.body.is_active || []);
+    const oldIcons = [].concat(req.body.old_icon || []);
 
-    const payload = ids.map((id, i) => ({
-      id,
-      title_id: title_id[i],
-      title_en: title_en[i],
-      description_id: desc_id[i],
-      description_en: desc_en[i],
-      icon_key: icon_key[i],
-      accent: accent[i],
-      sort_order: sort_order[i],
-      is_active: actives.includes(String(id)),
-    }));
+    // req.files: [{ fieldname: "icon_12", filename: "xxx.png", ... }]
+    const files = req.files || [];
+
+    // build map: { "12": file, "15": file }
+    const filesById = Object.create(null);
+    for (const f of files) {
+      const m = String(f.fieldname || "").match(/^icon_(\d+)$/);
+      if (m) filesById[m[1]] = f;
+    }
+
+    const payload = ids.map((id, i) => {
+      const idStr = String(id);
+      const file = filesById[idStr];
+
+      return {
+        id,
+        title_id: title_id[i],
+        title_en: title_en[i],
+        description_id: desc_id[i],
+        description_en: desc_en[i],
+        icon_key: file
+          ? `/uploads/services/${file.filename}`
+          : (oldIcons[i] || null),
+        accent: accent[i],
+        sort_order: Number(sort_order[i] ?? 0),
+        is_active: actives.includes(idStr),
+      };
+    });
 
     await Services.updateServiceItems(payload);
   } catch (e) {
-    console.error(e);
+    console.error("saveServiceItems error:", e);
   }
+
   return res.redirect("/admin/services");
 }
+
 
 async function deleteService(req, res) {
   try { await Services.deleteServiceItem(req.params.id); } catch (e) { console.error(e); }

@@ -165,7 +165,7 @@
           </form>
         </div>
 
-        <form method="post" action="/admin/services/save">
+        <form method="post" action="/admin/services/save" enctype="multipart/form-data">
           <div class="tableWrap">
             <table>
               <thead>
@@ -195,15 +195,16 @@
                     <td><textarea name="description_id"><%= it.description_id || '' %></textarea></td>
                     <td><textarea name="description_en"><%= it.description_en || '' %></textarea></td>
                     <td>
-                      <select name="icon_key">
-                        <option value="clock" <%= it.icon_key==='clock' ? 'selected' : '' %>>clock</option>
-                        <option value="cashless" <%= it.icon_key==='cashless' ? 'selected' : '' %>>cashless</option>
-                        <option value="team" <%= it.icon_key==='team' ? 'selected' : '' %>>team</option>
-                        <option value="chart" <%= it.icon_key==='chart' ? 'selected' : '' %>>chart</option>
-                        <option value="trophy" <%= it.icon_key==='trophy' ? 'selected' : '' %>>trophy</option>
-                        <option value="rocket" <%= it.icon_key==='rocket' ? 'selected' : '' %>>rocket</option>
-                        <option value="custom" <%= it.icon_key==='custom' ? 'selected' : '' %>>custom</option>
-                      </select>
+                      <input type="hidden" name="old_icon" value="<%= it.icon_key || '' %>">
+
+                      <!-- upload file untuk row ini -->
+                      <input type="file" name="icon_<%= it.id %>" accept="image/*">
+
+                      <% if (it.icon_key) { %>
+                        <div style="margin-top:6px;">
+                          <img src="<%= it.icon_key %>" style="height:36px;width:36px;object-fit:contain;border:1px solid #eee;border-radius:8px;">
+                        </div>
+                      <% } %>
                     </td>
                     <td>
                       <select name="accent">
