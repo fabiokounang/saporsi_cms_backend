@@ -12,7 +12,7 @@ const { getPool } = require("../utils/db");
 
 async function oneRow(table) {
   const pool = getPool();
-  const [rows] = await pool.query(`SELECT * FROM \`${table}\` LIMIT 1`);
+  const [rows] = await pool.query(`SELECT * FROM \`${table}\` LIMIT ?`, [1]);
   return rows[0] || null;
 }
 
@@ -47,6 +47,8 @@ async function getAll() {
     partners,
     partner_items,
 
+    cta,
+
     footer,
     footer_quick_links,
   ] = await Promise.all([
@@ -71,6 +73,8 @@ async function getAll() {
 
     oneRow("site_partners"),
     listRows("site_partner_items"),
+
+    oneRow("site_cta"),
 
     oneRow("site_footer"),
     listRows("site_footer_quick_links"),
@@ -112,6 +116,8 @@ async function getAll() {
       ...partners,
       items: partner_items,
     },
+
+    cta: cta,
 
     footer: {
       ...footer,

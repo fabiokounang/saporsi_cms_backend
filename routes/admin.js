@@ -57,6 +57,7 @@ const {
   saveQuickLinks,
   deleteQuickLink,
 } = require("../controllers/footer");
+const { pageCTA, saveCTA } = require("../controllers/cta");
 
 const { navbarUpload, heroUpload, galleryUpload, partnerUpload, serviceUpload } = require("../utils/uploader");
 
@@ -130,6 +131,9 @@ router.post("/partners/add", requireAuthJWT, partnerUpload.single("logo"), addPa
 router.post("/partners/:id", requireAuthJWT, partnerUpload.single("logo"), savePartner);
 router.post("/partners/:id/delete", requireAuthJWT, deletePartner);
 
+// CTA 
+router.get("/cta", requireAuthJWT, pageCTA);
+router.post("/cta/save", requireAuthJWT, saveCTA);
 
 // FOOTER
 router.get("/footer", requireAuthJWT, renderFooter);

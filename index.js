@@ -35,7 +35,6 @@ const corsOptions = {
     if (ALLOWED_ORIGINS.has(normalized)) return cb(null, true);
 
     // jangan throw error biar nggak spam log & nggak bikin 500
-    console.log("[CORS BLOCKED]", { origin, normalized });
     return cb(null, false);
   },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
