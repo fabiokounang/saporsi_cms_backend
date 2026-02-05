@@ -32,6 +32,7 @@ module.exports = {
   heroUpload: makeUploader("hero"),
   aboutUpload: makeUploader("about"),
   serviceUpload: makeUploader("services"),
+  howItWorksUpload: makeUploader("how-it-works"),
   galleryUpload: makeUploader("gallery"),
   partnerUpload: makeUploader("partners")
 };

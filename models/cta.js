@@ -13,9 +13,8 @@ async function getCTA() {
       is_active,
       updated_at
     FROM site_cta
-    WHERE id = 1
-    LIMIT 1
-  `);
+    WHERE id = ?
+  `, [1]);
 
   return rows[0] || null;
 }

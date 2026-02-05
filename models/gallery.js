@@ -5,24 +5,20 @@ const { getPool } = require("../utils/db");
 /* ===== Header ===== */
 async function getGalleryHeader() {
   const pool = getPool();
-  const [rows] = await pool.query(`SELECT * FROM site_gallery WHERE id=1 LIMIT 1`);
+  const [rows] = await pool.query(`SELECT * FROM site_gallery WHERE id = ?`, [1]);
   return rows[0] || null;
 }
 
 async function updateGalleryHeader(payload) {
   const pool = getPool();
-  await pool.query(
-    `UPDATE site_gallery
-     SET badge_id=?, badge_en=?, title_id=?, title_en=?,
-         subtitle_id=?, subtitle_en=?
-     WHERE id=1 LIMIT 1`,
-    [
+  await pool.query(`UPDATE site_gallery SET badge_id=?, badge_en=?, title_id=?, title_en=?, subtitle_id=?, subtitle_en=? WHERE id = ?`, [
       payload.badge_id || "",
       payload.badge_en || "",
       payload.title_id || "",
       payload.title_en || "",
       payload.subtitle_id || "",
       payload.subtitle_en || "",
+      1
     ]
   );
 }
@@ -59,7 +55,7 @@ async function updateGalleryItem(payload) {
   await pool.query(
     `UPDATE site_gallery_items
      SET label_id=?, label_en=?, image_path=?, sort_order=?, is_active=?
-     WHERE id=? LIMIT 1`,
+     WHERE id = ?`,
     [
       payload.label_id || "",
       payload.label_en || "",
@@ -73,7 +69,7 @@ async function updateGalleryItem(payload) {
 
 async function deleteGalleryItem(id) {
   const pool = getPool();
-  await pool.query(`DELETE FROM site_gallery_items WHERE id=? LIMIT 1`, [Number(id)]);
+  await pool.query(`DELETE FROM site_gallery_items WHERE id = ?`, [Number(id)]);
 }
 
 module.exports = {

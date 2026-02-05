@@ -3,7 +3,7 @@ const { getPool } = require("../utils/db");
 
 async function getFooter() {
   const pool = getPool();
-  const [rows] = await pool.query(`SELECT * FROM site_footer WHERE id=1 LIMIT 1`);
+  const [rows] = await pool.query(`SELECT * FROM site_footer WHERE id = ?`, [1]);
   return rows[0] || null;
 }
 
@@ -15,7 +15,7 @@ async function updateFooter(payload) {
       contact_email=?, contact_phone=?,
       contact_location_id=?, contact_location_en=?,
       copyright_id=?, copyright_en=?
-     WHERE id=1 LIMIT 1`,
+     WHERE id=?`,
     [
       payload.desc_id || "",
       payload.desc_en || "",
@@ -25,6 +25,7 @@ async function updateFooter(payload) {
       payload.contact_location_en || "",
       payload.copyright_id || "",
       payload.copyright_en || "",
+      1
     ]
   );
 }
@@ -54,7 +55,7 @@ async function updateQuickLinks(items) {
     await pool.query(
       `UPDATE site_footer_quick_links
        SET label_id=?, label_en=?, url=?, sort_order=?, is_active=?
-       WHERE id=? LIMIT 1`,
+       WHERE id=?`,
       [
         it.label_id || "",
         it.label_en || "",
@@ -69,7 +70,7 @@ async function updateQuickLinks(items) {
 
 async function deleteQuickLink(id) {
   const pool = getPool();
-  await pool.query(`DELETE FROM site_footer_quick_links WHERE id=? LIMIT 1`, [Number(id)]);
+  await pool.query(`DELETE FROM site_footer_quick_links WHERE id=?`, [Number(id)]);
 }
 
 module.exports = {

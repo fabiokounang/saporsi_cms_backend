@@ -59,7 +59,17 @@ const {
 } = require("../controllers/footer");
 const { pageCTA, saveCTA } = require("../controllers/cta");
 
-const { navbarUpload, heroUpload, galleryUpload, partnerUpload, serviceUpload } = require("../utils/uploader");
+const {
+  renderHowItWorks,
+  saveHeader,
+  addItem,
+  saveItems,
+  deleteItem,
+} = require("../controllers/howitworks");
+;
+const early = require("../controllers/earlyprogram");
+
+const { navbarUpload, heroUpload, galleryUpload, partnerUpload, serviceUpload, howItWorksUpload } = require("../utils/uploader");
 
 
 router.get("/", requireAuthJWT, (req, res) => {
@@ -108,6 +118,18 @@ router.post("/services/add", requireAuthJWT, addService);
 router.post("/services/save", requireAuthJWT, serviceUpload.any(), saveServiceItems);
 router.post("/services/:id/delete", requireAuthJWT, deleteService);
 
+// HOW IT WORKS
+router.get("/how-it-works", requireAuthJWT, renderHowItWorks);
+router.post("/how-it-works/header", requireAuthJWT, saveHeader);
+router.post("/how-it-works/add", requireAuthJWT, addItem);
+router.post(
+  "/how-it-works/save",
+  requireAuthJWT,
+  howItWorksUpload.any(),
+  saveItems
+);
+router.post("/how-it-works/:id/delete", requireAuthJWT, deleteItem);
+
 // GALLERY
 router.get("/gallery", requireAuthJWT, renderGallery);
 router.post("/gallery/header", requireAuthJWT, saveGalleryHeader);
@@ -130,6 +152,13 @@ router.post("/partners/header", requireAuthJWT, savePartnerHeader);
 router.post("/partners/add", requireAuthJWT, partnerUpload.single("logo"), addPartner);
 router.post("/partners/:id", requireAuthJWT, partnerUpload.single("logo"), savePartner);
 router.post("/partners/:id/delete", requireAuthJWT, deletePartner);
+
+// EARLY PROGRAM
+router.get("/early-program", requireAuthJWT, early.page);
+router.post("/early-program/header", requireAuthJWT, early.saveHeader);
+router.post("/early-program/benefits/add", requireAuthJWT, early.addBenefit);
+router.post("/early-program/benefits/save", requireAuthJWT, early.saveBenefits);
+router.post("/early-program/benefits/delete/:id", requireAuthJWT, early.deleteBenefit);
 
 // CTA 
 router.get("/cta", requireAuthJWT, pageCTA);

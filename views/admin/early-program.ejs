@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Early Partner Program • Saporsi CMS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f6f4f1;--text:#111827;--muted:#6b7280;--line:#ece7e1;
+      --accent:#ff6a2a;--accent2:#ff3d3d;--radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(255,106,42,.12), transparent 60%),
+        radial-gradient(900px 500px at 85% 90%, rgba(255,61,61,.10), transparent 60%),
+        linear-gradient(180deg,#fbfaf8,var(--bg));
+      min-height:100vh;
+    }
+    .shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+    @media (max-width:980px){.shell{grid-template-columns:1fr}aside{display:none}}
+
+    aside{padding:18px;border-right:1px solid rgba(236,231,225,.9);background:rgba(255,255,255,.55);backdrop-filter:blur(8px)}
+    .brand{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.8)}
+    .logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+    .brand h1{margin:0;font-size:14px}.brand p{margin:2px 0 0 0;font-size:12px;color:var(--muted)}
+    nav{margin-top:16px}
+    .navItem{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;color:#374151;text-decoration:none;font-size:13px;font-weight:600;border:1px solid transparent;transition:.15s}
+    .navItem:hover{background:rgba(255,255,255,.8);border-color:rgba(236,231,225,.9)}
+    .navItem.active{background:rgba(255,106,42,.12);border-color:rgba(255,106,42,.25);color:#111827}
+    .dot{width:8px;height:8px;border-radius:999px;background:rgba(17,24,39,.35)}
+    .navItem.active .dot{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+
+    main{padding:18px 18px 28px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border-radius:var(--radius);
+      background:rgba(255,255,255,.8);border:1px solid rgba(236,231,225,.9)}
+    .topbar h2{margin:0;font-size:16px}
+    .topbar .sub{color:var(--muted);font-size:12px;margin-top:2px}
+    .userBox{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.9);border:1px solid rgba(236,231,225,.9)}
+    .avatar{width:34px;height:34px;border-radius:999px;background:rgba(17,24,39,.08);display:grid;place-items:center;font-weight:800;color:#374151}
+    .userMeta{line-height:1.2}
+    .userMeta .name{font-size:12px;font-weight:700}
+    .userMeta .role{font-size:11px;color:var(--muted)}
+    .logout{margin-left:10px;padding:10px 14px;border-radius:999px;text-decoration:none;font-weight:700;font-size:12px;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+
+    .content{margin-top:16px;display:grid;gap:14px}
+    .card{background:rgba(255,255,255,.9);border:1px solid rgba(236,231,225,.9);border-radius:var(--radius);padding:16px}
+    .cardHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .cardHead h3{margin:0;font-size:14px}
+    .cardHead p{margin:6px 0 0 0;color:var(--muted);font-size:12px;line-height:1.6}
+
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:980px){.grid2{grid-template-columns:1fr}}
+
+    label{display:block;font-size:12px;color:#374151;margin:0 0 7px 2px}
+    input, textarea, select{width:100%;padding:12px;border:1px solid var(--line);border-radius:14px;outline:none;font-family:inherit;font-size:13px;background:#fff}
+    textarea{min-height:120px;resize:vertical}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
+    .btn{border:1px solid rgba(236,231,225,.9);background:#fff;padding:10px 12px;border-radius:14px;cursor:pointer;font-weight:800;font-family:inherit;font-size:12px}
+    .btnPrimary{border:0;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+    .btnDanger{border:1px solid rgba(254,205,211,.9);background:#fff1f2;color:#9f1239}
+    .tableWrap{overflow:auto;border:1px solid rgba(236,231,225,.9);border-radius:16px;background:#fff}
+    table{width:100%;border-collapse:separate;border-spacing:0;min-width:1200px}
+    thead th{font-size:12px;color:#374151;padding:12px;background:rgba(246,244,241,.85);border-bottom:1px solid rgba(236,231,225,.9);text-align:left;position:sticky;top:0}
+    tbody td{padding:10px 12px;border-bottom:1px solid rgba(236,231,225,.7);vertical-align:middle;font-size:13px}
+    tbody tr:hover td{background:rgba(255,106,42,.06)}
+    .mini{width:90px}
+    .chk{width:18px;height:18px}
+    .hint{color:var(--muted);font-size:12px;margin-top:8px;line-height:1.6}
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>SAPORSI CMS</h1>
+          <p>Company Profile Manager</p>
+        </div>
+      </div>
+
+      <!-- nav optional (samain style about.ejs kalau kamu mau aktifkan) -->
+      <!--
+      <nav>
+        <a class="navItem" href="/admin"><span class="dot"></span> Dashboard</a>
+        <a class="navItem" href="/admin/navbar"><span class="dot"></span> Navbar</a>
+        <a class="navItem" href="/admin/hero"><span class="dot"></span> Hero</a>
+        <a class="navItem" href="/admin/about"><span class="dot"></span> About Us</a>
+        <a class="navItem" href="/admin/services"><span class="dot"></span> Services</a>
+        <a class="navItem active" href="/admin/early-program"><span class="dot"></span> Early Program</a>
+      </nav>
+      -->
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <h2>Early Partner Program</h2>
+          <div class="sub">Kelola section Early Program (header, highlight, CTA, right card, KPI, tip, floating label) + benefits (ID/EN).</div>
+        </div>
+        <div style="display:flex;align-items:center;">
+          <a class="logout" href="/admin">Back to Dashboard</a> &nbsp;&nbsp;
+          <div class="userBox">
+            <div class="avatar"><%= (user.name || 'A')[0].toUpperCase() %></div>
+            <div class="userMeta">
+              <div class="name"><%= user.name %></div>
+              <div class="role"><%= user.role %></div>
+            </div>
+          </div>
+          <a class="logout" href="/auth/logout">Logout</a>
+        </div>
+      </header>
+
+      <section class="content">
+        <% if (typeof saved !== 'undefined' && saved) { %>
+          <div class="card" style="background:#ecfdf3;border-color:#bbf7d0;color:#065f46;font-size:12px;font-weight:700;">Tersimpan ✅</div>
+        <% } %>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="card" style="background:#fff1f2;border-color:#fecdd3;color:#9f1239;font-size:12px;font-weight:700;"><%= error %></div>
+        <% } %>
+
+
+        <!-- HEADER / MAIN SETTINGS -->
+        <div class="card">
+          <div class="cardHead">
+            <div>
+              <h3>Early Program Header + Layout Text</h3>
+              <p>Semua text yang dipakai di section Early Partner Program (kiri + kanan), termasuk CTA, WhatsApp, KPI, dan floating label.</p>
+            </div>
+          </div>
+
+          <form method="POST" action="/admin/early-program/header">
+            <div class="grid2">
+              <div>
+                <label>Label / Badge (ID)</label>
+                <input name="label_id" value="<%= header?.label_id || '' %>">
+              </div>
+              <div>
+                <label>Label / Badge (EN)</label>
+                <input name="label_en" value="<%= header?.label_en || '' %>">
+              </div>
+
+              <div>
+                <label>Title (ID)</label>
+                <input name="title_id" value="<%= header?.title_id || '' %>">
+              </div>
+              <div>
+                <label>Title (EN)</label>
+                <input name="title_en" value="<%= header?.title_en || '' %>">
+              </div>
+
+              <div>
+                <label>Description (ID)</label>
+                <textarea name="desc_id"><%= header?.desc_id || '' %></textarea>
+              </div>
+              <div>
+                <label>Description (EN)</label>
+                <textarea name="desc_en"><%= header?.desc_en || '' %></textarea>
+              </div>
+
+              <div>
+                <label>Highlight Title (ID)</label>
+                <input name="highlight_title_id" value="<%= header?.highlight_title_id || '' %>">
+              </div>
+              <div>
+                <label>Highlight Title (EN)</label>
+                <input name="highlight_title_en" value="<%= header?.highlight_title_en || '' %>">
+              </div>
+
+              <div>
+                <label>Highlight Desc (ID)</label>
+                <textarea name="highlight_desc_id" style="min-height:90px;"><%= header?.highlight_desc_id || '' %></textarea>
+              </div>
+              <div>
+                <label>Highlight Desc (EN)</label>
+                <textarea name="highlight_desc_en" style="min-height:90px;"><%= header?.highlight_desc_en || '' %></textarea>
+              </div>
+
+              <div>
+                <label>Benefits Title (ID)</label>
+                <input name="benefits_title_id" value="<%= header?.benefits_title_id || '' %>">
+              </div>
+              <div>
+                <label>Benefits Title (EN)</label>
+                <input name="benefits_title_en" value="<%= header?.benefits_title_en || '' %>">
+              </div>
+
+              <div>
+                <label>Left CTA Primary Label (ID)</label>
+                <input name="cta_primary_id" value="<%= header?.cta_primary_id || '' %>">
+              </div>
+              <div>
+                <label>Left CTA Primary Label (EN)</label>
+                <input name="cta_primary_en" value="<%= header?.cta_primary_en || '' %>">
+              </div>
+
+              <div>
+                <label>Left CTA Primary URL</label>
+                <input name="cta_primary_url" value="<%= header?.cta_primary_url || '' %>">
+              </div>
+              <div>
+                <label>Left CTA Secondary URL</label>
+                <input name="cta_secondary_url" value="<%= header?.cta_secondary_url || '' %>">
+              </div>
+
+              <div>
+                <label>Left CTA Secondary Label (ID)</label>
+                <input name="cta_secondary_id" value="<%= header?.cta_secondary_id || '' %>">
+              </div>
+              <div>
+                <label>Left CTA Secondary Label (EN)</label>
+                <input name="cta_secondary_en" value="<%= header?.cta_secondary_en || '' %>">
+              </div>
+
+              <div>
+                <label>Right Title (ID)</label>
+                <input name="right_title_id" value="<%= header?.right_title_id || '' %>">
+              </div>
+              <div>
+                <label>Right Title (EN)</label>
+                <input name="right_title_en" value="<%= header?.right_title_en || '' %>">
+              </div>
+
+              <div>
+                <label>Right Badge (ID)</label>
+                <input name="right_badge_id" value="<%= header?.right_badge_id || '' %>">
+              </div>
+              <div>
+                <label>Right Badge (EN)</label>
+                <input name="right_badge_en" value="<%= header?.right_badge_en || '' %>">
+              </div>
+
+              <div>
+                <label>Right Desc (ID)</label>
+                <textarea name="right_desc_id"><%= header?.right_desc_id || '' %></textarea>
+              </div>
+              <div>
+                <label>Right Desc (EN)</label>
+                <textarea name="right_desc_en"><%= header?.right_desc_en || '' %></textarea>
+              </div>
+
+              <div>
+                <label>KPI 1 Label (ID)</label>
+                <input name="kpi1_label_id" value="<%= header?.kpi1_label_id || '' %>">
+              </div>
+              <div>
+                <label>KPI 1 Label (EN)</label>
+                <input name="kpi1_label_en" value="<%= header?.kpi1_label_en || '' %>">
+              </div>
+
+              <div>
+                <label>KPI 1 Value (ID)</label>
+                <input name="kpi1_value_id" value="<%= header?.kpi1_value_id || '' %>">
+              </div>
+              <div>
+                <label>KPI 1 Value (EN)</label>
+                <input name="kpi1_value_en" value="<%= header?.kpi1_value_en || '' %>">
+              </div>
+
+              <div>
+                <label>KPI 2 Label (ID)</label>
+                <input name="kpi2_label_id" value="<%= header?.kpi2_label_id || '' %>">
+              </div>
+              <div>
+                <label>KPI 2 Label (EN)</label>
+                <input name="kpi2_label_en" value="<%= header?.kpi2_label_en || '' %>">
+              </div>
+
+              <div>
+                <label>KPI 2 Value (ID)</label>
+                <input name="kpi2_value_id" value="<%= header?.kpi2_value_id || '' %>">
+              </div>
+              <div>
+                <label>KPI 2 Value (EN)</label>
+                <input name="kpi2_value_en" value="<%= header?.kpi2_value_en || '' %>">
+              </div>
+
+              <div>
+                <label>KPI 3 Label (ID)</label>
+                <input name="kpi3_label_id" value="<%= header?.kpi3_label_id || '' %>">
+              </div>
+              <div>
+                <label>KPI 3 Label (EN)</label>
+                <input name="kpi3_label_en" value="<%= header?.kpi3_label_en || '' %>">
+              </div>
+
+              <div>
+                <label>KPI 3 Value (ID)</label>
+                <input name="kpi3_value_id" value="<%= header?.kpi3_value_id || '' %>">
+              </div>
+              <div>
+                <label>KPI 3 Value (EN)</label>
+                <input name="kpi3_value_en" value="<%= header?.kpi3_value_en || '' %>">
+              </div>
+
+              <div>
+                <label>KPI 4 Label (ID)</label>
+                <input name="kpi4_label_id" value="<%= header?.kpi4_label_id || '' %>">
+              </div>
+              <div>
+                <label>KPI 4 Label (EN)</label>
+                <input name="kpi4_label_en" value="<%= header?.kpi4_label_en || '' %>">
+              </div>
+
+              <div>
+                <label>KPI 4 Value (ID)</label>
+                <input name="kpi4_value_id" value="<%= header?.kpi4_value_id || '' %>">
+              </div>
+              <div>
+                <label>KPI 4 Value (EN)</label>
+                <input name="kpi4_value_en" value="<%= header?.kpi4_value_en || '' %>">
+              </div>
+
+              <div>
+                <label>Tip Title (ID)</label>
+                <input name="note_title_id" value="<%= header?.note_title_id || '' %>">
+              </div>
+              <div>
+                <label>Tip Title (EN)</label>
+                <input name="note_title_en" value="<%= header?.note_title_en || '' %>">
+              </div>
+
+              <div>
+                <label>Tip Desc (ID)</label>
+                <textarea name="note_desc_id" style="min-height:90px;"><%= header?.note_desc_id || '' %></textarea>
+              </div>
+              <div>
+                <label>Tip Desc (EN)</label>
+                <textarea name="note_desc_en" style="min-height:90px;"><%= header?.note_desc_en || '' %></textarea>
+              </div>
+
+              <div>
+                <label>Right CTA Primary (ID)</label>
+                <input name="right_cta_primary_id" value="<%= header?.right_cta_primary_id || '' %>">
+              </div>
+              <div>
+                <label>Right CTA Primary (EN)</label>
+                <input name="right_cta_primary_en" value="<%= header?.right_cta_primary_en || '' %>">
+              </div>
+
+              <div>
+                <label>Right CTA Primary URL</label>
+                <input name="right_cta_primary_url" value="<%= header?.right_cta_primary_url || '' %>">
+              </div>
+              <div>
+                <label>WhatsApp URL</label>
+                <input name="whatsapp_url" value="<%= header?.whatsapp_url || '' %>">
+              </div>
+
+              <div>
+                <label>Floating Title (ID)</label>
+                <input name="float_title_id" value="<%= header?.float_title_id || '' %>">
+              </div>
+              <div>
+                <label>Floating Title (EN)</label>
+                <input name="float_title_en" value="<%= header?.float_title_en || '' %>">
+              </div>
+
+              <div>
+                <label>Floating Sub (ID)</label>
+                <input name="float_sub_id" value="<%= header?.float_sub_id || '' %>">
+              </div>
+              <div>
+                <label>Floating Sub (EN)</label>
+                <input name="float_sub_en" value="<%= header?.float_sub_en || '' %>">
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn btnPrimary" type="submit">Simpan Section</button>
+            </div>
+          </form>
+
+          <div class="hint">
+            Tips: URL boleh pakai <b>#contact</b> sesuai anchor frontend. WhatsApp URL contoh: <b>https://wa.me/62812xxxx</b>
+          </div>
+        </div>
+
+        <!-- BENEFITS -->
+        <div class="card">
+          <div class="cardHead">
+            <div>
+              <h3>Benefits (List)</h3>
+              <p>4 item benefit di kolom kiri. Accent mengikuti warna icon background gradient di frontend.</p>
+            </div>
+            <form method="POST" action="/admin/early-program/benefits/add">
+              <button class="btn" type="submit">+ Add Benefit</button>
+            </form>
+          </div>
+
+          <form method="POST" action="/admin/early-program/benefits/save">
+            <div class="tableWrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:90px;">Active</th>
+                    <th>Title (ID)</th>
+                    <th>Title (EN)</th>
+                    <th>Description (ID)</th>
+                    <th>Description (EN)</th>
+                    <th style="width:160px;">Accent</th>
+                    <th style="width:100px;">Order</th>
+                    <th style="width:120px;">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% (benefits || []).forEach((b) => { %>
+                    <tr>
+                      <td>
+                        <input class="chk" type="checkbox" name="is_active" value="<%= b.id %>" <%= b.is_active ? 'checked' : '' %> />
+                      </td>
+                      <td>
+                        <input type="hidden" name="benefit_id" value="<%= b.id %>">
+                        <input name="title_id" value="<%= b.title_id || '' %>">
+                      </td>
+                      <td><input name="title_en" value="<%= b.title_en || '' %>"></td>
+                      <td><textarea name="description_id" style="min-height:90px;"><%= b.description_id || '' %></textarea></td>
+                      <td><textarea name="description_en" style="min-height:90px;"><%= b.description_en || '' %></textarea></td>
+                      <td>
+                        <select name="accent">
+                          <option value="orange" <%= b.accent==='orange' ? 'selected' : '' %>>orange</option>
+                          <option value="green" <%= b.accent==='green' ? 'selected' : '' %>>green</option>
+                          <option value="blue" <%= b.accent==='blue' ? 'selected' : '' %>>blue</option>
+                          <option value="purple" <%= b.accent==='purple' ? 'selected' : '' %>>purple</option>
+                          <option value="red" <%= b.accent==='red' ? 'selected' : '' %>>red</option>
+                          <option value="yellow" <%= b.accent==='yellow' ? 'selected' : '' %>>yellow</option>
+                        </select>
+                      </td>
+                      <td><input class="mini" name="sort_order" value="<%= b.sort_order ?? 0 %>"></td>
+                      <td>
+                        <button type="button" class="btn btnDanger js-del-benefit" data-id="<%= b.id %>">Delete</button>
+                      </td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="actions">
+              <button class="btn btnPrimary" type="submit">Simpan Benefits</button>
+            </div>
+          </form>
+
+          <div class="hint">
+            Accent mapping (frontend): orange/green/blue/purple (sesuai icon gradient). Kamu bisa tambah varian lain kalau butuh.
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("click", function(e){
+      const btn = e.target.closest(".js-del-benefit");
+      if (!btn) return;
+      const id = btn.dataset.id;
+      if (!confirm("Hapus benefit ini?")) return;
+      fetch(`/admin/early-program/benefits/${id}/delete`, { method:"POST" }).then(()=>location.reload());
+    });
+  </script>
+</body>
+</html>

@@ -38,6 +38,9 @@ async function getAll() {
     services,
     services_items,
 
+    howitworks,
+    howitworksitems,
+
     gallery,
     gallery_items,
 
@@ -46,6 +49,9 @@ async function getAll() {
 
     partners,
     partner_items,
+
+    earlyprogram,
+    earlyprogram_items,
 
     cta,
 
@@ -65,6 +71,9 @@ async function getAll() {
     oneRow("site_services"),
     listRows("site_services_items"),
 
+    oneRow("site_how_it_works"),
+    listRows("site_how_it_works_items"),
+
     oneRow("site_gallery"),
     listRows("site_gallery_items"),
 
@@ -73,6 +82,9 @@ async function getAll() {
 
     oneRow("site_partners"),
     listRows("site_partner_items"),
+
+    oneRow("site_early_program"),
+    listRows("site_early_program_benefits"),
 
     oneRow("site_cta"),
 
@@ -102,6 +114,11 @@ async function getAll() {
       items: services_items,
     },
 
+    howitworks: {
+      ...howitworks,
+      items: howitworksitems
+    },
+
     gallery: {
       ...gallery,
       items: gallery_items,
@@ -115,6 +132,11 @@ async function getAll() {
     partners: {
       ...partners,
       items: partner_items,
+    },
+
+    earlyprogram: {
+      ...earlyprogram,
+      items: earlyprogram_items,
     },
 
     cta: cta,

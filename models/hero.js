@@ -65,7 +65,7 @@ async function addHeroImage(image_path) {
 async function deleteHeroImage(id) {
   const pool = getPool();
   const [rows] = await pool.query(
-    `SELECT image_path FROM hero_images WHERE id = :id LIMIT 1`,
+    `SELECT image_path FROM hero_images WHERE id = :id `,
     { id: Number(id) }
   );
   const imagePath = rows[0]?.image_path || null;
