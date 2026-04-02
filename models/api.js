@@ -53,6 +53,9 @@ async function getAll() {
     earlyprogram,
     earlyprogram_items,
 
+    contact,
+    contact_steps,
+
     cta,
 
     footer,
@@ -85,6 +88,9 @@ async function getAll() {
 
     oneRow("site_early_program"),
     listRows("site_early_program_benefits"),
+
+    oneRow("site_contact"),
+    listRows("site_contact_steps"),
 
     oneRow("site_cta"),
 
@@ -139,6 +145,10 @@ async function getAll() {
       items: earlyprogram_items,
     },
 
+    contact: {
+      ...contact,
+      items: contact_steps
+    },
     cta: cta,
 
     footer: {

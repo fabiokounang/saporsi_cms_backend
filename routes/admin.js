@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { requireAuthJWT } = require("../middleware/auth");
+const { body } = require("express-validator");
 
 const {
   renderNavbar,
@@ -69,6 +70,7 @@ const {
 ;
 const early = require("../controllers/earlyprogram");
 
+const ContactCtrl = require("../controllers/contact");
 const { navbarUpload, heroUpload, galleryUpload, partnerUpload, serviceUpload, howItWorksUpload } = require("../utils/uploader");
 
 
@@ -159,6 +161,25 @@ router.post("/early-program/header", requireAuthJWT, early.saveHeader);
 router.post("/early-program/benefits/add", requireAuthJWT, early.addBenefit);
 router.post("/early-program/benefits/save", requireAuthJWT, early.saveBenefits);
 router.post("/early-program/benefits/delete/:id", requireAuthJWT, early.deleteBenefit);
+
+// contact
+router.get("/contact", requireAuthJWT, ContactCtrl.renderContact);
+router.post(
+  "/contact/header",
+  requireAuthJWT,
+  body("badge_id").trim().notEmpty().withMessage("Badge (ID) wajib diisi"),
+  body("badge_en").trim().notEmpty().withMessage("Badge (EN) wajib diisi"),
+  body("title_id").trim().notEmpty().withMessage("Title (ID) wajib diisi"),
+  body("title_en").trim().notEmpty().withMessage("Title (EN) wajib diisi"),
+  body("steps_title_id").trim().notEmpty().withMessage("Steps title (ID) wajib diisi"),
+  body("steps_title_en").trim().notEmpty().withMessage("Steps title (EN) wajib diisi"),
+  body("button_label_id").trim().notEmpty().withMessage("Button label (ID) wajib diisi"),
+  body("button_label_en").trim().notEmpty().withMessage("Button label (EN) wajib diisi"),
+  ContactCtrl.saveContactHeader
+);
+router.post("/contact/steps/add", requireAuthJWT, ContactCtrl.addContactStep);
+router.post("/contact/steps/save", requireAuthJWT, ContactCtrl.saveContactSteps);
+router.post("/contact/steps/:id/delete", requireAuthJWT, ContactCtrl.deleteContactStep);
 
 // CTA 
 router.get("/cta", requireAuthJWT, pageCTA);
