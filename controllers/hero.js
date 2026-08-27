@@ -84,12 +84,10 @@ async function addHeroImage(req, res) {
 
 async function saveHeroImages(req, res) {
   try {
-    const id = req.body.image_id;
-    const sort_order = req.body.sort_order;
-    const is_active = req.body.is_active; // checkbox value = id
     await Hero.updateHeroImages(req.body);
     return res.redirect("/admin/hero");
   } catch (err) {
+    console.error(err);
     return res.redirect("/admin/hero");
   }
 }

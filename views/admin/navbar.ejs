@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Navbar • Saporsi CMS</title>
+  <title>Navbar • Samakan CMS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -222,7 +222,7 @@
       <div class="brand">
         <div class="logo"></div>
         <div>
-          <h1>SAPORSI CMS</h1>
+          <h1>SAMAKAN CMS</h1>
           <p>Company Profile Manager</p>
         </div>
       </div>
@@ -373,9 +373,11 @@
 
                       <td>
                         <div class="rowActions">
-                          <form method="post" action="/admin/navbar/<%= it.id %>/delete" onsubmit="return confirm('Hapus item ini?')">
-                            <button class="btn btnDanger" type="submit">Delete</button>
-                          </form>
+                          <button
+                            type="button"
+                            class="btn btnDanger"
+                            onclick="deleteNavbarItem(<%= it.id %>)"
+                          >Delete</button>
                         </div>
                       </td>
                     </tr>
@@ -397,5 +399,13 @@
       </section>
     </main>
   </div>
+  <script>
+    function deleteNavbarItem(id) {
+      if (!confirm("Hapus item ini?")) return;
+      fetch("/admin/navbar/" + id + "/delete", { method: "POST" }).then(function () {
+        window.location.reload();
+      });
+    }
+  </script>
 </body>
 </html>

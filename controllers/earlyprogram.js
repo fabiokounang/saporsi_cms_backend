@@ -3,6 +3,7 @@ const fs = require("fs/promises");
 const multer = require("multer");
 
 const Early = require("../models/earlyprogram");
+const { assertImageFiles } = require("../utils/uploader");
 
 const UPLOAD_DIR = path.join(process.cwd(), "public/uploads/early-program");
 
@@ -34,8 +35,10 @@ const upload = multer({
   storage,
   limits: { fileSize: 1 * 1024 * 1024 }, // 1MB
   fileFilter: (req, file, cb) => {
-    const ok = ["image/png", "image/jpeg", "image/webp"].includes(file.mimetype);
-    if (!ok) return cb(new Error("Only image files (png/jpg/webp) are allowed"));
+    const ext = path.extname(file.originalname || "").toLowerCase();
+    const mimeOk = ["image/png", "image/jpeg", "image/webp"].includes(file.mimetype);
+    const extOk = !ext || [".png", ".jpg", ".jpeg", ".webp"].includes(ext);
+    if (!mimeOk || !extOk) return cb(new Error("File harus berupa gambar png/jpg/webp"));
     cb(null, true);
   },
 });
@@ -149,6 +152,7 @@ async function saveBenefits(req, res) {
     }
 
     try {
+      await assertImageFiles(req.files || []);
       const ids = arr(req.body.benefit_id);
       const title_id = arr(req.body.title_id);
       const title_en = arr(req.body.title_en);

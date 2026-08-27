@@ -38,19 +38,24 @@ async function getItems() {
     `SELECT id, title_id, title_en, description_id, description_en,
             icon_path, sort_order, is_active
      FROM site_how_it_works_items
-     ORDER BY sort_order ASC`,
-    [1]
+     ORDER BY sort_order ASC, id ASC`
   );
   return rows;
 }
 
 async function addItem() {
   const pool = getPool();
-  await pool.query(
-    `INSERT INTO site_how_it_works_items (id)
-     VALUES (?)`,
-    [1]
+  const [maxRows] = await pool.query(
+    `SELECT COALESCE(MAX(sort_order), 0) + 1 AS next_order FROM site_how_it_works_items`
   );
+  const sort_order = Number(maxRows[0]?.next_order) || 1;
+  const [res] = await pool.query(
+    `INSERT INTO site_how_it_works_items
+     (title_id, title_en, description_id, description_en, icon_path, sort_order, is_active)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    ["Langkah baru", "New step", "", "", null, sort_order, 1]
+  );
+  return res.insertId;
 }
 
 async function updateItems(items) {

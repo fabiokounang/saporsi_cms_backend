@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hero • Saporsi CMS</title>
+  <title>Hero • Samakan CMS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,7 +96,7 @@
       <div class="brand">
         <div class="logo"></div>
         <div>
-          <h1>SAPORSI CMS</h1>
+          <h1>SAMAKAN CMS</h1>
           <p>Company Profile Manager</p>
         </div>
       </div>
@@ -137,11 +137,11 @@
             <div class="grid2">
               <div>
                 <label>Title (ID)</label>
-                <input name="title_id" value="<%= data?.title_id || '' %>" placeholder="Saporsi — Makanan Praktis, Modern, dan Berkualitas" />
+                <input name="title_id" value="<%= data?.title_id || '' %>" placeholder="Samakan — Makanan Praktis, Modern, dan Berkualitas" />
               </div>
               <div>
                 <label>Title (EN)</label>
-                <input name="title_en" value="<%= data?.title_en || '' %>" placeholder="Saporsi — Practical, Modern, Quality Meals" />
+                <input name="title_en" value="<%= data?.title_en || '' %>" placeholder="Samakan — Practical, Modern, Quality Meals" />
               </div>
 
               <div>
@@ -230,7 +230,7 @@
                       </td>
 
                       <td>
-                        <input class="mini" name="sort_order" value="<%= img.sort_order %>" />
+                        <input class="mini" type="number" name="sort_order" min="1" step="1" value="<%= img.sort_order %>" />
                       </td>
 
                       <td>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Locations • Saporsi CMS</title>
+  <title>Locations • Samakan CMS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,7 +73,7 @@
     <div class="brand">
       <div class="logo"></div>
       <div>
-        <h1>SAPORSI CMS</h1>
+        <h1>SAMAKAN CMS</h1>
         <p>Company Profile Manager</p>
       </div>
     </div>
@@ -161,9 +161,9 @@
             <h3>Location Cards</h3>
             <p>Tambah / edit / urutkan kartu lokasi (icon + accent).</p>
           </div>
-          <!-- <form method="post" action="/admin/locations/add">
+          <form method="post" action="/admin/locations/add">
             <button class="btn" type="submit">+ Add Card</button>
-          </form> -->
+          </form>
         </div>
 
         <form method="post" action="/admin/locations/save">
@@ -177,7 +177,7 @@
                   <th style="width:180px;">Icon</th>
                   <th style="width:180px;">Accent</th>
                   <th style="width:90px;">Order</th>
-                  <!-- <th style="width:120px;">Action</th> -->
+                  <th style="width:120px;">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -211,9 +211,9 @@
                       </select>
                     </td>
                     <td><input class="mini" name="sort_order" value="<%= it.sort_order ?? 0 %>"></td>
-                    <!-- <td>
+                    <td>
                       <button type="button" class="btn btnDanger js-del" data-id="<%= it.id %>">Delete</button>
-                    </td> -->
+                    </td>
                   </tr>
                 <% }) %>
               </tbody>

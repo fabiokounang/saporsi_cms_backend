@@ -3,9 +3,11 @@ require("dotenv").config();
 
 const path = require("path");
 const express = require("express");
-const session = require('express-session');
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const helmet = require("helmet");
+const { rateLimit } = require("express-rate-limit");
+const { issueCsrf, verifyCsrf, injectCsrfHtml } = require("./middleware/csrf");
 const app = express();
 
 const auth = require('./routes/auth');
@@ -18,8 +20,8 @@ const ALLOWED_ORIGINS = new Set([
   "http://127.0.0.1:8080",
   "http://localhost:3000",
   "http://127.0.0.1:3000",
-  "https://saporsi.com",
-  "https://www.saporsi.com"
+  "https://samakan.id",
+  "https://www.samakan.id"
   // kalau kamu kadang akses FE lewat netlify subdomain:
   // "https://kenaritower.netlify.app",
 ]);
@@ -38,11 +40,17 @@ const corsOptions = {
     return cb(null, false);
   },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "X-CSRF-Token"],
   credentials: true,
 };
 
 app.disable("x-powered-by");
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 app.set("trust proxy", 1);
@@ -58,17 +66,22 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // ====== Static ======
+app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 
-app.use(session({
-  secret: process.env.SESSION_SECRET || "saporsi-secret",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: process.env.NODE_ENV === "production", // true di https
-    sameSite: "lax", // untuk admin di cms.kenaritower.com
-  }
-}));
+app.use(issueCsrf);
+app.use(injectCsrfHtml);
+app.use(verifyCsrf);
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 20,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: "Terlalu banyak percobaan login. Coba lagi nanti.",
+  skip: (req) => req.method !== "POST",
+});
+app.use("/auth/login", loginLimiter);
 
 // routes
 app.use("/auth", auth);
@@ -93,7 +106,11 @@ app.use((err, req, res, next) => {
 });
 
 // ====== Start Server ======
-const PORT = Number(process.env.PORT || 3000);
-app.listen(PORT, () => {
-  console.log(`Saporsi CMS running on ${PORT}`);
-});
+if (require.main === module) {
+  const PORT = Number(process.env.PORT || 3000);
+  app.listen(PORT, () => {
+    console.log(`Samakan CMS running on ${PORT}`);
+  });
+}
+
+module.exports = app;

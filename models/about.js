@@ -11,7 +11,7 @@ async function getAbout() {
 
 async function updateAbout(payload) {
   const pool = getPool();
-  await pool.query(`UPDATE site_about SET badge_id=?, badge_en=?, title_id=?, title_en=?, description_id=?, description_en=?WHERE id = ?`,
+  await pool.query(`UPDATE site_about SET badge_id=?, badge_en=?, title_id=?, title_en=?, description_id=?, description_en=? WHERE id = ?`,
     [
       payload.badge_id || "",
       payload.badge_en || "",

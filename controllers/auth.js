@@ -3,6 +3,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
+const { rotateCsrf } = require("../middleware/csrf");
 
 function signToken(payload) {
   return jwt.sign(payload, process.env.JWT_SECRET, {
@@ -61,6 +62,7 @@ async function login(req, res) {
       name: user.name
     });
 
+    rotateCsrf(res);
     res.cookie("token", token, cookieOptions());
     return res.redirect("/admin");
   } catch (err) {

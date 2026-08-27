@@ -1,10 +1,13 @@
 {
-  "name": "saporsi-by-kyojin",
+  "name": "samakan-by-kyojin",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "node --test --test-force-exit scripts/e2e.test.js && node --test --test-force-exit scripts/security.test.js",
+    "test:e2e": "node --test --test-force-exit scripts/e2e.test.js",
+    "test:security": "node --test --test-force-exit scripts/security.test.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -14,7 +17,6 @@
     "ejs": "^3.1.10",
     "express": "^4.22.1",
     "express-rate-limit": "^8.2.1",
-    "express-session": "^1.18.2",
     "express-validator": "^7.3.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",

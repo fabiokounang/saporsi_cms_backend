@@ -17,12 +17,20 @@ async function renderHowItWorks(req, res) {
 }
 
 async function saveHeader(req, res) {
-  await HowItWorks.updateHeader(req.body);
+  try {
+    await HowItWorks.updateHeader(req.body);
+  } catch (e) {
+    console.error("how-it-works saveHeader:", e);
+  }
   return res.redirect("/admin/how-it-works");
 }
 
 async function addItem(req, res) {
-  await HowItWorks.addItem();
+  try {
+    await HowItWorks.addItem();
+  } catch (e) {
+    console.error("how-it-works addItem:", e);
+  }
   return res.redirect("/admin/how-it-works");
 }
 
