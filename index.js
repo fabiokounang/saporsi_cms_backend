@@ -21,6 +21,7 @@ const ALLOWED_ORIGINS = new Set([
   "http://localhost:3000",
   "http://127.0.0.1:3000",
   "https://samakan.id",
+  "https://cms.samakan.id",
   "https://www.samakan.id"
   // kalau kamu kadang akses FE lewat netlify subdomain:
   // "https://kenaritower.netlify.app",
@@ -112,9 +113,16 @@ app.use((err, req, res, next) => {
 // ====== Start Server ======
 if (require.main === module) {
   const PORT = Number(process.env.PORT || 3000);
-  app.listen(PORT, () => {
-    console.log(`Samakan CMS running on ${PORT}`);
-  });
+  const { ensureCmsSchema } = require("./utils/schema");
+  ensureCmsSchema()
+    .catch((err) => {
+      console.error("Gagal menyiapkan skema CMS:", err.message || err);
+    })
+    .finally(() => {
+      app.listen(PORT, () => {
+        console.log(`Samakan CMS running on ${PORT}`);
+      });
+    });
 }
 
 module.exports = app;

@@ -18,16 +18,30 @@ function safeUnlink(publicPath) {
 }
 
 async function renderHero(req, res) {
-  const data = await Hero.getHero();
-  const images = await Hero.getHeroImages();
+  try {
+    const data = await Hero.getHero();
+    const images = await Hero.getHeroImages();
 
-  res.render("admin/hero", {
-    user: req.user,
-    data,
-    images,
-    saved: false,
-    error: null,
-  });
+    res.render("admin/hero", {
+      user: req.user,
+      data,
+      images,
+      saved: false,
+      error: null,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).render("admin/hero", {
+      user: req.user,
+      data: null,
+      images: [],
+      saved: false,
+      error:
+        err && err.code === "ER_NO_SUCH_TABLE"
+          ? "Tabel hero belum ada di database. Restart CMS supaya skema dibuat, atau jalankan npm run schema."
+          : "Gagal memuat Hero content",
+    });
+  }
 }
 
 async function saveHero(req, res) {

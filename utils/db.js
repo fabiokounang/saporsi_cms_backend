@@ -14,6 +14,7 @@ function getPool() {
       database: process.env.DB_NAME,
       waitForConnections: true,
       connectionLimit: 10,
+      connectTimeout: 10_000,
       namedPlaceholders: true,
       enableKeepAlive: true,
       keepAliveInitialDelay: 0,

@@ -23,6 +23,24 @@ async function listRows(table) {
   return rows || [];
 }
 
+async function safeOne(table) {
+  try {
+    return await oneRow(table);
+  } catch (err) {
+    console.error(`public site: ${table}:`, err.message);
+    return null;
+  }
+}
+
+async function safeList(table) {
+  try {
+    return await listRows(table);
+  } catch (err) {
+    console.error(`public site: ${table}:`, err.message);
+    return [];
+  }
+}
+
 async function getAll() {
   const [
     navbar,
@@ -61,41 +79,41 @@ async function getAll() {
     footer,
     footer_quick_links,
   ] = await Promise.all([
-    oneRow("site_navbar"),
-    listRows("site_navbar_items"),
+    safeOne("site_navbar"),
+    safeList("site_navbar_items"),
 
-    oneRow("hero"),
-    listRows("hero_images"),
+    safeOne("hero"),
+    safeList("hero_images"),
 
-    oneRow("site_about"),
-    listRows("site_about_cards"),
-    listRows("site_about_points"),
+    safeOne("site_about"),
+    safeList("site_about_cards"),
+    safeList("site_about_points"),
 
-    oneRow("site_services"),
-    listRows("site_services_items"),
+    safeOne("site_services"),
+    safeList("site_services_items"),
 
-    oneRow("site_how_it_works"),
-    listRows("site_how_it_works_items"),
+    safeOne("site_how_it_works"),
+    safeList("site_how_it_works_items"),
 
-    oneRow("site_gallery"),
-    listRows("site_gallery_items"),
+    safeOne("site_gallery"),
+    safeList("site_gallery_items"),
 
-    oneRow("site_locations"),
-    listRows("site_location_items"),
+    safeOne("site_locations"),
+    safeList("site_location_items"),
 
-    oneRow("site_partners"),
-    listRows("site_partner_items"),
+    safeOne("site_partners"),
+    safeList("site_partner_items"),
 
-    oneRow("site_early_program"),
-    listRows("site_early_program_benefits"),
+    safeOne("site_early_program"),
+    safeList("site_early_program_benefits"),
 
-    oneRow("site_contact"),
-    listRows("site_contact_steps"),
+    safeOne("site_contact"),
+    safeList("site_contact_steps"),
 
-    oneRow("site_cta"),
+    safeOne("site_cta"),
 
-    oneRow("site_footer"),
-    listRows("site_footer_quick_links"),
+    safeOne("site_footer"),
+    safeList("site_footer_quick_links"),
   ]);
 
   return {

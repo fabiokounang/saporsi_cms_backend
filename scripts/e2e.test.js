@@ -8,6 +8,7 @@ const PAGES = [
   ["/admin", "Dashboard"],
   ["/admin/navbar", "Navbar"],
   ["/admin/hero", "Hero"],
+  ["/admin/home", "Hero"],
   ["/admin/about", "About"],
   ["/admin/services", "Services"],
   ["/admin/how-it-works", "How"],

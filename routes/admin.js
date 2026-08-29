@@ -1,4 +1,5 @@
-const router = require("express").Router();
+const { wrapRouter } = require("../middleware/async");
+const router = wrapRouter(require("express").Router());
 const { requireAuthJWT } = require("../middleware/auth");
 const { body } = require("express-validator");
 
@@ -77,6 +78,8 @@ const { navbarUpload, heroUpload, galleryUpload, partnerUpload, serviceUpload, h
 router.get("/", requireAuthJWT, (req, res) => {
   res.render("admin/dashboard", { user: req.user });
 });
+
+router.get("/home", requireAuthJWT, renderHero);
 
 router.get("/navbar", requireAuthJWT, renderNavbar);
 router.post(

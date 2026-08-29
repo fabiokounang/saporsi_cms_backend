@@ -123,6 +123,16 @@
       </header>
 
       <section class="content">
+        <% if (error) { %>
+          <div class="card" style="border-color:rgba(159,18,57,.35);color:#9f1239;">
+            <%= error %>
+          </div>
+        <% } %>
+        <% if (saved) { %>
+          <div class="card" style="border-color:rgba(22,163,74,.35);color:#166534;">
+            Hero content tersimpan.
+          </div>
+        <% } %>
 
         <!-- Hero Content -->
         <div class="card">
