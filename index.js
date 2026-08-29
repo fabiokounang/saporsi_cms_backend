@@ -81,6 +81,10 @@ const loginLimiter = rateLimit({
   message: "Terlalu banyak percobaan login. Coba lagi nanti.",
   skip: (req) => req.method !== "POST",
 });
+
+app.get('/', (req, res) => {
+  res.redirect('/auth/login');
+});
 app.use("/auth/login", loginLimiter);
 
 // routes
