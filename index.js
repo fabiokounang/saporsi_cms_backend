@@ -69,7 +69,12 @@ app.set("views", path.join(__dirname, "views"));
 
 // ====== Static ======
 app.use("/public", express.static(path.join(__dirname, "public")));
-app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+app.use("/uploads", 
+  (req, res, next) => {
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    next();
+  }, 
+  express.static(path.join(__dirname, "public/uploads")));
 
 app.use(issueCsrf);
 app.use(injectCsrfHtml);
