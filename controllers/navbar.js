@@ -1,6 +1,7 @@
 "use strict";
 
 const Navbar = require("../models/navbar");
+const { userErrorMessage } = require("../utils/public-error");
 
 async function renderNavbar(req, res) {
   const settings = await Navbar.getNavbarSettings();
@@ -77,7 +78,7 @@ async function saveNavbar(req, res) {
       settings,
       items,
       saved: false,
-      error: err.message || "Gagal menyimpan Navbar",
+      error: userErrorMessage(err, "Gagal menyimpan Navbar"),
     });
   }
 }

@@ -274,7 +274,7 @@
       </div>
 
       <% if (error) { %>
-        <div class="err"><%= error %></div>
+        <div data-flash="error" class="err"><%= error %></div>
       <% } %>
 
       <form method="post" action="/auth/login" autocomplete="on">

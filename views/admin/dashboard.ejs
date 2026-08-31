@@ -209,42 +209,69 @@
       padding:6px 10px;
       border-radius:999px;
     }
+
+    .kpis{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+    }
+    .kpi{
+      background: rgba(255,255,255,.92);
+      border:1px solid rgba(236,231,225,.9);
+      border-radius: var(--radius);
+      padding:16px;
+      box-shadow: 0 12px 30px rgba(16,24,40,.06);
+    }
+    .kpi .label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.3px;text-transform:uppercase}
+    .kpi .value{margin:8px 0 4px;font-size:28px;font-weight:800;letter-spacing:-.5px}
+    .kpi .hint{margin:0;font-size:12px;color:var(--muted)}
+    .charts{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: 280px 1fr;
+      gap:12px;
+    }
+    .panel{
+      background: rgba(255,255,255,.92);
+      border:1px solid rgba(236,231,225,.9);
+      border-radius: var(--radius);
+      padding:16px;
+      box-shadow: 0 12px 30px rgba(16,24,40,.06);
+    }
+    .panel h3{margin:0 0 4px;font-size:14px}
+    .panel .sub{margin:0 0 14px;font-size:12px;color:var(--muted)}
+    .donut-wrap{display:flex;align-items:center;gap:16px}
+    .donut{position:relative;width:132px;height:132px;flex:0 0 132px}
+    .donut svg{transform:rotate(-90deg)}
+    .donut-center{
+      position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+    }
+    .donut-center strong{display:block;font-size:22px;line-height:1}
+    .donut-center span{font-size:11px;color:var(--muted);font-weight:700}
+    .legend{margin:0;padding:0;list-style:none;font-size:12px;color:#374151}
+    .legend li{display:flex;align-items:center;gap:8px;margin:0 0 8px}
+    .swatch{width:10px;height:10px;border-radius:99px}
+    .bars{display:grid;gap:8px}
+    .bar-row{display:grid;grid-template-columns:110px 1fr 36px;align-items:center;gap:10px}
+    .bar-row span{font-size:12px;color:#374151;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .bar-row b{font-size:12px;text-align:right}
+    .track{height:8px;border-radius:99px;background:#f3eee9;overflow:hidden}
+    .fill{height:100%;border-radius:99px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+    .alert-list{margin:0;padding:0;list-style:none}
+    .alert-list li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(236,231,225,.8);font-size:12px}
+    .alert-list a{color:#b45309;font-weight:700;text-decoration:none}
+    .section-title{margin:22px 0 0;font-size:14px}
+    @media (max-width: 980px){
+      .kpis,.charts{grid-template-columns:1fr}
+      .kpi{grid-column:auto}
+    }
   </style>
 </head>
 <body>
   <div class="shell">
 
-    <!-- Sidebar -->
-    <aside>
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>SAMAKAN CMS</h1>
-          <p>Company Profile Manager</p>
-        </div>
-      </div>
-
-      <!-- <nav>
-        <a class="navItem active" href="/admin">
-          <span class="dot"></span> Dashboard
-        </a>
-        <a class="navItem" href="/admin/navbar">
-          <span class="dot"></span> Navbar
-        </a>
-        <a class="navItem" href="/admin/home">
-          <span class="dot"></span> Home
-        </a>
-        <a class="navItem" href="/admin/about">
-          <span class="dot"></span> About Us
-        </a>
-        <a class="navItem" href="/admin/gallery">
-          <span class="dot"></span> Gallery
-        </a>
-        <a class="navItem" href="/admin/services">
-          <span class="dot"></span> Services
-        </a>
-      </nav> -->
-    </aside>
+    <%- include('../partials/admin-sidebar', { active: 'dashboard' }) %>
 
     <!-- Main -->
     <main>
@@ -269,12 +296,101 @@
       <section class="intro">
         <h3>Kelola Tampilan Website Samakan</h3>
         <p>
-          Dashboard ini digunakan khusus untuk mengatur konten company profile seperti
-          navigasi, halaman utama, tentang kami, layanan, dan galeri.
-          Tidak ada modul stok atau transaksi di sini.
+          Ringkasan kelengkapan konten company profile. Bukan stok atau transaksi —
+          angka di bawah diambil dari modul yang sudah terisi.
         </p>
       </section>
 
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div hidden data-flash="error"><%= error %></div>
+      <% } %>
+
+      <% const s = typeof stats !== 'undefined' && stats ? stats : { totalItems:0, activeItems:0, media:0, completeness:0, readyCount:0, emptyCount:0, modules:[], needsWork:[] }; %>
+      <% const maxBar = Math.max.apply(null, [1].concat((s.modules || []).map(function(m){ return m.total; }))); %>
+      <% const circ = 339.292; %>
+      <% const dash = Math.round((s.completeness / 100) * circ); %>
+
+      <section class="kpis">
+        <div class="kpi">
+          <div class="label">Kelengkapan</div>
+          <div class="value"><%= s.completeness %>%</div>
+          <p class="hint"><%= s.readyCount %> dari <%= (s.readyCount + s.emptyCount) %> modul siap tayang</p>
+        </div>
+        <div class="kpi">
+          <div class="label">Item konten</div>
+          <div class="value"><%= s.totalItems %></div>
+          <p class="hint"><%= s.activeItems %> aktif · <%= Math.max(0, s.totalItems - s.activeItems) %> nonaktif</p>
+        </div>
+        <div class="kpi">
+          <div class="label">Media</div>
+          <div class="value"><%= s.media %></div>
+          <p class="hint">Gambar hero + gallery</p>
+        </div>
+        <div class="kpi">
+          <div class="label">Perlu dilengkapi</div>
+          <div class="value"><%= s.emptyCount %></div>
+          <p class="hint"><%= s.emptyCount ? 'Ada modul yang masih kosong' : 'Semua modul sudah terisi' %></p>
+        </div>
+      </section>
+
+      <section class="charts">
+        <div class="panel">
+          <h3>Status modul</h3>
+          <p class="sub">Siap tayang vs masih perlu diisi.</p>
+          <div class="donut-wrap">
+            <div class="donut">
+              <svg width="132" height="132" viewBox="0 0 132 132" aria-hidden="true">
+                <circle cx="66" cy="66" r="54" fill="none" stroke="#f3eee9" stroke-width="14"></circle>
+                <circle cx="66" cy="66" r="54" fill="none" stroke="url(#dashGrad)" stroke-width="14" stroke-linecap="round"
+                  stroke-dasharray="<%= dash %> <%= circ - dash %>"></circle>
+                <defs>
+                  <linearGradient id="dashGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#ff6a2a"></stop>
+                    <stop offset="100%" stop-color="#ff3d3d"></stop>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="donut-center">
+                <div>
+                  <strong><%= s.completeness %>%</strong>
+                  <span>siap</span>
+                </div>
+              </div>
+            </div>
+            <ul class="legend">
+              <li><span class="swatch" style="background:linear-gradient(135deg,#ff6a2a,#ff3d3d)"></span> <%= s.readyCount %> modul siap</li>
+              <li><span class="swatch" style="background:#e5e0da"></span> <%= s.emptyCount %> perlu dilengkapi</li>
+            </ul>
+          </div>
+          <% if (s.needsWork && s.needsWork.length) { %>
+            <ul class="alert-list">
+              <% s.needsWork.forEach(function(item){ %>
+                <li>
+                  <span><%= item.label %></span>
+                  <a href="<%= item.href %>">Lengkapi</a>
+                </li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </div>
+
+        <div class="panel">
+          <h3>Jumlah item per modul</h3>
+          <p class="sub">Kartu, foto, menu, lokasi, dan tautan yang tersimpan.</p>
+          <div class="bars">
+            <% (s.modules || []).forEach(function(m){ %>
+              <div class="bar-row">
+                <span title="<%= m.label %>"><%= m.label %></span>
+                <div class="track"><div class="fill" style="width:<%= Math.round((m.total / maxBar) * 100) %>%"></div></div>
+                <b><%= m.total %></b>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      </section>
+
+      <% if (false) { %>
+      <h3 class="section-title">Pintasan modul</h3>
       <section class="grid">
         <a href="/admin/navbar" class="card">
           <h4>Navbar</h4>
@@ -348,6 +464,7 @@
           <span class="tag">Footer</span>
         </a>
       </section>
+      <% } %>
     </main>
 
   </div>

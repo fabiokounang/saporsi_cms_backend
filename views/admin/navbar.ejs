@@ -217,16 +217,7 @@
 <body>
   <div class="shell">
 
-    <!-- Sidebar -->
-    <aside>
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>SAMAKAN CMS</h1>
-          <p>Company Profile Manager</p>
-        </div>
-      </div>
-    </aside>
+    <%- include('../partials/admin-sidebar', { active: 'navbar' }) %>
 
     <!-- Main -->
     <main>
@@ -237,7 +228,6 @@
         </div>
 
         <div style="display:flex;align-items:center;">
-          <a class="logout" href="/admin">Back to Dashboard</a> &nbsp;&nbsp;
           <div class="userBox">
             <div class="avatar"><%= (user.name)[0].toUpperCase() %></div>
             <div class="userMeta">
@@ -252,11 +242,11 @@
       <section class="content">
 
         <% if (saved) { %>
-          <div class="alertOk">Tersimpan ✅</div>
+          <div data-flash="ok" class="alertOk">Tersimpan</div>
         <% } %>
 
         <% if (error) { %>
-          <div class="alertErr"><%= error %></div>
+          <div data-flash="error" class="alertErr"><%= error %></div>
         <% } %>
 
         <!-- Settings -->
@@ -402,9 +392,7 @@
   <script>
     function deleteNavbarItem(id) {
       if (!confirm("Hapus item ini?")) return;
-      fetch("/admin/navbar/" + id + "/delete", { method: "POST" }).then(function () {
-        window.location.reload();
-      });
+      samakanPost("/admin/navbar/" + id + "/delete");
     }
   </script>
 </body>

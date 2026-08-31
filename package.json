@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "test": "node --test --test-force-exit scripts/e2e.test.js && node --test --test-force-exit scripts/security.test.js",
+    "test": "node --test --test-force-exit scripts/public-error.test.js && node --test --test-force-exit scripts/e2e.test.js && node --test --test-force-exit scripts/security.test.js",
     "test:e2e": "node --test --test-force-exit scripts/e2e.test.js",
     "test:security": "node --test --test-force-exit scripts/security.test.js",
     "schema": "node scripts/ensure-schema.js"

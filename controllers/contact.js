@@ -1,11 +1,31 @@
 // controllers/contact.js
 const { validationResult } = require("express-validator");
 const Contact = require("../models/contact");
+const { userErrorMessage } = require("../utils/public-error");
+
+function safeFlash(raw) {
+  const t = String(raw || "").replace(/[<>]/g, "").trim();
+  if (!t || t.length > 160) return "";
+  if (/https?:|ER_|ECONN|SELECT |Table '|site_|SQL/i.test(t)) return "Gagal memproses permintaan. Coba lagi.";
+  return t;
+}
+
+function failRedirect(err, fallback) {
+  return `/admin/contact?error=${encodeURIComponent(userErrorMessage(err, fallback))}`;
+}
 
 async function renderContact(req, res) {
   try {
     const header = await Contact.getContactHeader();
-    if (!header) return res.render("admin/contact", { user: req.user, header: null, steps: [], saved: 0, error: "site_contact belum ada" });
+    if (!header) {
+      return res.render("admin/contact", {
+        user: req.user,
+        header: null,
+        steps: [],
+        saved: 0,
+        error: "Data kontak belum siap. Coba lagi, atau hubungi admin teknis.",
+      });
+    }
 
     const steps = await Contact.listContactSteps(header.id);
 
@@ -14,11 +34,17 @@ async function renderContact(req, res) {
       header,
       steps,
       saved: String(req.query.saved || "") === "1" ? 1 : 0,
-      error: req.query.error || "",
+      error: safeFlash(req.query.error),
     });
   } catch (e) {
     console.error("renderContact error:", e);
-    return res.render("admin/contact", { user: req.user, header: null, steps: [], saved: 0, error: "Server error" });
+    return res.render("admin/contact", {
+      user: req.user,
+      header: null,
+      steps: [],
+      saved: 0,
+      error: userErrorMessage(e, "Gagal memuat halaman kontak"),
+    });
   }
 }
 
@@ -26,12 +52,16 @@ async function saveContactHeader(req, res) {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const msg = errors.array()[0]?.msg || "Validation error";
+      const msg = errors.array()[0]?.msg || "Isian tidak valid. Periksa form, lalu coba lagi.";
       return res.redirect(`/admin/contact?error=${encodeURIComponent(msg)}`);
     }
 
     const header = await Contact.getContactHeader();
-    if (!header) return res.redirect(`/admin/contact?error=${encodeURIComponent("site_contact belum ada")}`);
+    if (!header) {
+      return res.redirect(
+        `/admin/contact?error=${encodeURIComponent("Data kontak belum siap. Coba lagi, atau hubungi admin teknis.")}`
+      );
+    }
 
     await Contact.updateContactHeader({
       id: header.id,
@@ -50,20 +80,24 @@ async function saveContactHeader(req, res) {
     return res.redirect("/admin/contact?saved=1");
   } catch (e) {
     console.error("saveContactHeader error:", e);
-    return res.redirect(`/admin/contact?error=${encodeURIComponent("Server error")}`);
+    return res.redirect(failRedirect(e, "Gagal menyimpan kontak"));
   }
 }
 
 async function addContactStep(req, res) {
   try {
     const header = await Contact.getContactHeader();
-    if (!header) return res.redirect(`/admin/contact?error=${encodeURIComponent("site_contact belum ada")}`);
+    if (!header) {
+      return res.redirect(
+        `/admin/contact?error=${encodeURIComponent("Data kontak belum siap. Coba lagi, atau hubungi admin teknis.")}`
+      );
+    }
 
     await Contact.addContactStep(header.id);
     return res.redirect("/admin/contact?saved=1");
   } catch (e) {
     console.error("addContactStep error:", e);
-    return res.redirect(`/admin/contact?error=${encodeURIComponent("Server error")}`);
+    return res.redirect(failRedirect(e, "Gagal menyimpan kontak"));
   }
 }
 
@@ -87,7 +121,7 @@ async function saveContactSteps(req, res) {
     return res.redirect("/admin/contact?saved=1");
   } catch (e) {
     console.error("saveContactSteps error:", e);
-    return res.redirect(`/admin/contact?error=${encodeURIComponent("Server error")}`);
+    return res.redirect(failRedirect(e, "Gagal menyimpan kontak"));
   }
 }
 
@@ -98,7 +132,7 @@ async function deleteContactStep(req, res) {
     return res.redirect("/admin/contact?saved=1");
   } catch (e) {
     console.error("deleteContactStep error:", e);
-    return res.redirect(`/admin/contact?error=${encodeURIComponent("Server error")}`);
+    return res.redirect(failRedirect(e, "Gagal menyimpan kontak"));
   }
 }
 

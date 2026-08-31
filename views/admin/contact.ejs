@@ -71,15 +71,7 @@
 
 <body>
   <div class="shell">
-    <aside>
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>SAMAKAN CMS</h1>
-          <p>Company Profile Manager</p>
-        </div>
-      </div>
-    </aside>
+    <%- include('../partials/admin-sidebar', { active: 'contact' }) %>
 
     <main>
       <header class="topbar">
@@ -88,7 +80,6 @@
           <div class="sub">Kelola intro + list “Next Steps” + label tombol (ID/EN).</div>
         </div>
         <div style="display:flex;align-items:center;">
-          <a class="logout" href="/admin">Back to Dashboard</a> &nbsp;&nbsp;
           <div class="userBox">
             <div class="avatar"><%= (user.name || 'A')[0].toUpperCase() %></div>
             <div class="userMeta">
@@ -105,10 +96,10 @@
         <% const errMsg  = (typeof error !== 'undefined' ? error : ''); %>
 
         <% if (isSaved) { %>
-          <div class="card" style="background:#ecfdf3;border-color:#bbf7d0;color:#065f46;font-size:12px;font-weight:700;">Tersimpan ✅</div>
+          <div data-flash="ok" class="card" style="background:#ecfdf3;border-color:#bbf7d0;color:#065f46;font-size:12px;font-weight:700;">Tersimpan</div>
         <% } %>
         <% if (errMsg) { %>
-          <div class="card" style="background:#fff1f2;border-color:#fecdd3;color:#9f1239;font-size:12px;font-weight:700;"><%= errMsg %></div>
+          <div data-flash="error" class="card" style="background:#fff1f2;border-color:#fecdd3;color:#9f1239;font-size:12px;font-weight:700;"><%= errMsg %></div>
         <% } %>
 
         <!-- HEADER -->
@@ -235,7 +226,7 @@
       if (!btn) return;
       const id = btn.dataset.id;
       if (!confirm("Hapus step ini?")) return;
-      fetch(`/admin/contact/steps/${id}/delete`, { method:"POST" }).then(()=>location.reload());
+      samakanPost("/admin/contact/steps/" + id + "/delete");
     });
   </script>
 </body>

@@ -72,12 +72,34 @@ const {
 const early = require("../controllers/earlyprogram");
 
 const ContactCtrl = require("../controllers/contact");
+const { renderDashboard } = require("../controllers/dashboard");
 const { navbarUpload, heroUpload, galleryUpload, partnerUpload, serviceUpload, howItWorksUpload } = require("../utils/uploader");
 
 
-router.get("/", requireAuthJWT, (req, res) => {
-  res.render("admin/dashboard", { user: req.user });
-});
+router.get("/", requireAuthJWT, renderDashboard);
+
+/** GET ke URL form POST (setelah fetch/refresh) jangan 404 — kembalikan ke editor. */
+const postOnlyBack = [
+  ["/services/save", "/admin/services"],
+  ["/services/header", "/admin/services"],
+  ["/services/add", "/admin/services"],
+  ["/hero-images/save", "/admin/hero"],
+  ["/how-it-works/save", "/admin/how-it-works"],
+  ["/how-it-works/header", "/admin/how-it-works"],
+  ["/how-it-works/add", "/admin/how-it-works"],
+  ["/locations/save", "/admin/locations"],
+  ["/locations/header", "/admin/locations"],
+  ["/footer/links/save", "/admin/footer"],
+  ["/early-program/benefits/save", "/admin/early-program"],
+  ["/cta/save", "/admin/cta"],
+  ["/contact/steps/save", "/admin/contact"],
+  ["/contact/header", "/admin/contact"],
+  ["/about-cards/save", "/admin/about"],
+  ["/about-points/save", "/admin/about"],
+];
+for (const [from, to] of postOnlyBack) {
+  router.get(from, requireAuthJWT, (req, res) => res.redirect(to));
+}
 
 router.get("/home", requireAuthJWT, renderHero);
 

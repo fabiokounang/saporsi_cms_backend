@@ -5,7 +5,7 @@ const assert = require("node:assert/strict");
 const { adminToken, startApp, request } = require("./test-helpers");
 
 const PAGES = [
-  ["/admin", "Dashboard"],
+  ["/admin", "Kelengkapan"],
   ["/admin/navbar", "Navbar"],
   ["/admin/hero", "Hero"],
   ["/admin/home", "Hero"],
@@ -64,6 +64,22 @@ describe("e2e companyprofile CMS", () => {
       assert.match(res.text, new RegExp(needle, "i"));
     });
   }
+
+  it("GET /admin/services/save kembali ke editor, bukan 404", async () => {
+    const res = await request(ctx.base, "/admin/services/save", { token });
+    assert.equal(res.status, 302);
+    assert.equal(res.loc, "/admin/services");
+  });
+
+  it("POST /admin/services/save mengarah ke editor", async () => {
+    const res = await request(ctx.base, "/admin/services/save", {
+      method: "POST",
+      token,
+      body: {},
+    });
+    assert.equal(res.status, 302);
+    assert.equal(res.loc, "/admin/services");
+  });
 
   it("API publik site mengembalikan JSON", async () => {
     const res = await request(ctx.base, "/api/public/site");

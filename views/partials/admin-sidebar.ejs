@@ -1,0 +1,59 @@
+<%
+  var current = typeof active === "string" ? active : "";
+  function itemClass(key) {
+    return current === key ? "navItem active" : "navItem";
+  }
+%>
+<style>
+  aside.admin-side {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  aside.admin-side nav {
+    margin-top: 16px;
+    padding-bottom: 20px;
+  }
+  @media (max-width: 980px) {
+    aside.admin-side {
+      display: block !important;
+      position: relative;
+      height: auto;
+      max-height: none;
+    }
+    aside.admin-side nav {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    aside.admin-side .navItem {
+      margin: 0 6px 6px 0;
+    }
+  }
+</style>
+<aside class="admin-side">
+  <a class="brand" href="/admin" style="text-decoration:none;color:inherit">
+    <div class="logo"></div>
+    <div>
+      <h1>SAMAKAN CMS</h1>
+      <p>Company Profile Manager</p>
+    </div>
+  </a>
+  <nav>
+    <a class="<%= itemClass('dashboard') %>" href="/admin"><span class="dot"></span> Dashboard</a>
+    <a class="<%= itemClass('navbar') %>" href="/admin/navbar"><span class="dot"></span> Navbar</a>
+    <a class="<%= itemClass('home') %>" href="/admin/home"><span class="dot"></span> Home</a>
+    <a class="<%= itemClass('about') %>" href="/admin/about"><span class="dot"></span> About Us</a>
+    <a class="<%= itemClass('services') %>" href="/admin/services"><span class="dot"></span> Services</a>
+    <a class="<%= itemClass('how-it-works') %>" href="/admin/how-it-works"><span class="dot"></span> How It Works</a>
+    <a class="<%= itemClass('gallery') %>" href="/admin/gallery"><span class="dot"></span> Gallery</a>
+    <a class="<%= itemClass('locations') %>" href="/admin/locations"><span class="dot"></span> Location</a>
+    <a class="<%= itemClass('partners') %>" href="/admin/partners"><span class="dot"></span> Partners</a>
+    <a class="<%= itemClass('early-program') %>" href="/admin/early-program"><span class="dot"></span> Early Program</a>
+    <a class="<%= itemClass('contact') %>" href="/admin/contact"><span class="dot"></span> Contact</a>
+    <a class="<%= itemClass('cta') %>" href="/admin/cta"><span class="dot"></span> CTA</a>
+    <a class="<%= itemClass('footer') %>" href="/admin/footer"><span class="dot"></span> Footer</a>
+  </nav>
+</aside>

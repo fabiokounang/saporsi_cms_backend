@@ -92,15 +92,7 @@
 <body>
   <div class="shell">
 
-    <aside>
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>SAMAKAN CMS</h1>
-          <p>Company Profile Manager</p>
-        </div>
-      </div>
-    </aside>
+    <%- include('../partials/admin-sidebar', { active: 'home' }) %>
 
     <main>
       <header class="topbar">
@@ -110,7 +102,6 @@
         </div>
 
         <div style="display:flex;align-items:center;">
-          <a class="logout" href="/admin">Back to Dashboard</a> &nbsp;&nbsp;
           <div class="userBox">
             <div class="avatar"><%= (user.name)[0].toUpperCase() %></div>
             <div class="userMeta">
@@ -124,12 +115,12 @@
 
       <section class="content">
         <% if (error) { %>
-          <div class="card" style="border-color:rgba(159,18,57,.35);color:#9f1239;">
+          <div data-flash="error" class="card" style="border-color:rgba(159,18,57,.35);color:#9f1239;">
             <%= error %>
           </div>
         <% } %>
         <% if (saved) { %>
-          <div class="card" style="border-color:rgba(22,163,74,.35);color:#166534;">
+          <div data-flash="ok" class="card" style="border-color:rgba(22,163,74,.35);color:#166534;">
             Hero content tersimpan.
           </div>
         <% } %>
@@ -274,11 +265,8 @@
   function deleteHeroImage(id) {
     if (!confirm("Hapus gambar ini?")) return;
 
-    fetch(`/admin/hero-images/${id}/delete`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" }
-    }).then(() => {
-      window.location.reload();
+    samakanPost("/admin/hero-images/" + id + "/delete", {
+      headers: { "Content-Type": "application/json" },
     });
   }
 </script>

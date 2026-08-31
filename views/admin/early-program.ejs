@@ -78,27 +78,7 @@
 
 <body>
   <div class="shell">
-    <aside>
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>SAMAKAN CMS</h1>
-          <p>Company Profile Manager</p>
-        </div>
-      </div>
-
-      <!-- nav optional (samain style about.ejs kalau kamu mau aktifkan) -->
-      <!--
-      <nav>
-        <a class="navItem" href="/admin"><span class="dot"></span> Dashboard</a>
-        <a class="navItem" href="/admin/navbar"><span class="dot"></span> Navbar</a>
-        <a class="navItem" href="/admin/hero"><span class="dot"></span> Hero</a>
-        <a class="navItem" href="/admin/about"><span class="dot"></span> About Us</a>
-        <a class="navItem" href="/admin/services"><span class="dot"></span> Services</a>
-        <a class="navItem active" href="/admin/early-program"><span class="dot"></span> Early Program</a>
-      </nav>
-      -->
-    </aside>
+    <%- include('../partials/admin-sidebar', { active: 'early-program' }) %>
 
     <main>
       <header class="topbar">
@@ -107,7 +87,6 @@
           <div class="sub">Kelola section Early Program (header, highlight, CTA, right card, KPI, tip, floating label) + benefits (ID/EN).</div>
         </div>
         <div style="display:flex;align-items:center;">
-          <a class="logout" href="/admin">Back to Dashboard</a> &nbsp;&nbsp;
           <div class="userBox">
             <div class="avatar"><%= (user.name || 'A')[0].toUpperCase() %></div>
             <div class="userMeta">
@@ -121,11 +100,11 @@
 
       <section class="content">
         <% if (typeof saved !== 'undefined' && saved) { %>
-          <div class="card" style="background:#ecfdf3;border-color:#bbf7d0;color:#065f46;font-size:12px;font-weight:700;">Tersimpan ✅</div>
+          <div data-flash="ok" class="card" style="background:#ecfdf3;border-color:#bbf7d0;color:#065f46;font-size:12px;font-weight:700;">Tersimpan</div>
         <% } %>
 
         <% if (typeof error !== 'undefined' && error) { %>
-          <div class="card" style="background:#fff1f2;border-color:#fecdd3;color:#9f1239;font-size:12px;font-weight:700;"><%= error %></div>
+          <div data-flash="error" class="card" style="background:#fff1f2;border-color:#fecdd3;color:#9f1239;font-size:12px;font-weight:700;"><%= error %></div>
         <% } %>
 
 
@@ -465,7 +444,7 @@
       if (!btn) return;
       const id = btn.dataset.id;
       if (!confirm("Hapus benefit ini?")) return;
-      fetch(`/admin/early-program/benefits/${id}/delete`, { method:"POST" }).then(()=>location.reload());
+      samakanPost("/admin/early-program/benefits/" + id + "/delete");
     });
   </script>
 </body>

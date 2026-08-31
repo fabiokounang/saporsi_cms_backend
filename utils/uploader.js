@@ -2,6 +2,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const fsp = require("fs/promises");
+const { explainError, BAD_IMAGE } = require("./public-error");
 
 const ALLOWED_EXT = new Set([".png", ".jpg", ".jpeg", ".webp"]);
 const ALLOWED_MIME = new Set(["image/png", "image/jpeg", "image/webp"]);
@@ -62,7 +63,7 @@ async function assertImageFiles(files) {
     const mime = detectImageMime(buf);
     if (!mime) {
       if (file.path) await fsp.unlink(file.path).catch(() => {});
-      const err = new Error("File harus berupa gambar png/jpg/webp");
+      const err = new Error(BAD_IMAGE);
       err.statusCode = 400;
       throw err;
     }
@@ -81,10 +82,18 @@ function verifyUploadedFiles(req, res, next) {
   assertImageFiles(collectFiles(req)).then(() => next(), next);
 }
 
+function asUploadError(err) {
+  const mapped = explainError(err);
+  const nextErr = err || new Error(mapped.message);
+  nextErr.statusCode = mapped.status;
+  nextErr.message = mapped.message;
+  return nextErr;
+}
+
 function wrapUploader(uploader) {
   const after = (mw) => (req, res, next) => {
     mw(req, res, (err) => {
-      if (err) return next(err);
+      if (err) return next(asUploadError(err));
       verifyUploadedFiles(req, res, next);
     });
   };
@@ -118,7 +127,7 @@ function makeUploader(folder) {
         const mimeOk = ALLOWED_MIME.has(file.mimetype);
         const extOk = !ext || ALLOWED_EXT.has(ext);
         if (!mimeOk || !extOk) {
-          return cb(new Error("File harus berupa gambar png/jpg/webp"));
+          return cb(new Error(BAD_IMAGE));
         }
         cb(null, true);
       },

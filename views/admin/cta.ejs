@@ -77,24 +77,7 @@
 </head>
 <body>
    <div class="shell">
-    <aside>
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>SAMAKAN CMS</h1>
-          <p>Company Profile Manager</p>
-        </div>
-      </div>
-
-      <!-- <nav>
-        <a class="navItem" href="/admin"><span class="dot"></span> Dashboard</a>
-        <a class="navItem" href="/admin/navbar"><span class="dot"></span> Navbar</a>
-        <a class="navItem" href="/admin/hero"><span class="dot"></span> Hero</a>
-        <a class="navItem active" href="/admin/about"><span class="dot"></span> About Us</a>
-        <a class="navItem" href="/admin/gallery"><span class="dot"></span> Gallery</a>
-        <a class="navItem" href="/admin/services"><span class="dot"></span> Services</a>
-      </nav> -->
-    </aside>
+    <%- include('../partials/admin-sidebar', { active: 'cta' }) %>
     <main>
       <header class="topbar">
         <div>
@@ -103,7 +86,6 @@
         </div>
     
         <div style="display:flex;align-items:center;">
-          <a class="logout" href="/admin">Back to Dashboard</a> &nbsp;&nbsp;
           <div class="userBox">
             <div class="avatar"><%= (user.name || 'A')[0].toUpperCase() %></div>
             <div class="userMeta">

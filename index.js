@@ -8,6 +8,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const { rateLimit } = require("express-rate-limit");
 const { issueCsrf, verifyCsrf, injectCsrfHtml } = require("./middleware/csrf");
+const { explainError, messageForStatus, wantsJson } = require("./utils/public-error");
 const app = express();
 
 const auth = require('./routes/auth');
@@ -57,9 +58,6 @@ app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 app.set("trust proxy", 1);
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-// ====== Parsers ======
 app.use(express.urlencoded({ extended: true, limit: "2mb" }));
 app.use(express.json({ limit: "2mb" }));
 
@@ -99,21 +97,38 @@ app.use("/auth", auth);
 app.use("/admin", admin);
 app.use("/api", api);
 
+function adminBackUrl(req) {
+  const ref = req.get("referer");
+  if (!ref) return "/admin";
+  try {
+    const pathName = new URL(ref).pathname;
+    if (pathName.startsWith("/admin")) return pathName;
+  } catch {
+    /* ignore */
+  }
+  return "/admin";
+}
+
+function sendPublicError(req, res, status, message) {
+  if (wantsJson(req)) return res.status(status).json({ error: message });
+  return res.status(status).render("error", {
+    status,
+    message,
+    backUrl: adminBackUrl(req),
+  });
+}
+
 // ====== 404 ======
 app.use((req, res) => {
-  // kalau kamu punya halaman 404, render di sini
-  return res.status(404).send("404 Not Found");
+  return sendPublicError(req, res, 404, messageForStatus(404));
 });
 
 // ====== Error Handler ======
 app.use((err, req, res, next) => {
+  if (res.headersSent) return next(err);
   console.error("ERROR:", err);
-
-  // jangan bocorin error detail ke user pada production
-  const isProd = process.env.NODE_ENV === "production";
-  const message = isProd ? "Internal Server Error" : (err.message || "Error");
-
-  return res.status(err.statusCode || 500).send(message);
+  const { status, message } = explainError(err);
+  return sendPublicError(req, res, status, message);
 });
 
 // ====== Start Server ======

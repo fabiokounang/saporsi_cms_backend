@@ -1,0 +1,122 @@
+#samakan-toasts {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 99999;
+  width: 360px;
+  max-width: calc(100vw - 24px);
+  pointer-events: none;
+}
+
+.samakan-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  margin: 0 0 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid #ece7e1;
+  box-shadow: 0 16px 40px rgba(16, 24, 40, 0.12);
+  color: #111827;
+  font-family: Montserrat, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  animation: samakan-toast-in 0.22s ease;
+}
+
+.samakan-toast.is-out {
+  animation: samakan-toast-out 0.18s ease forwards;
+}
+
+.samakan-toast-bar {
+  width: 4px;
+  min-height: 100%;
+  border-radius: 99px;
+  margin: 0 10px 0 0;
+  background: #ff6a2a;
+}
+
+.samakan-toast.is-error .samakan-toast-bar { background: #e11d48; }
+.samakan-toast.is-success .samakan-toast-bar { background: #16a34a; }
+
+.samakan-toast-body { flex: 1; min-width: 0; }
+.samakan-toast-title {
+  margin: 0 0 2px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+.samakan-toast.is-error .samakan-toast-title { color: #9f1239; }
+.samakan-toast.is-success .samakan-toast-title { color: #166534; }
+.samakan-toast-text { margin: 0; color: #374151; }
+
+.samakan-toast-close {
+  border: 0;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0 0 8px;
+}
+
+@keyframes samakan-toast-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes samakan-toast-out {
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+#samakan-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99990;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 24, 39, 0.28);
+  backdrop-filter: blur(4px);
+}
+
+#samakan-loader.is-on { display: flex; }
+
+.samakan-loader-card {
+  min-width: 220px;
+  max-width: calc(100vw - 40px);
+  padding: 22px 26px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #ece7e1;
+  box-shadow: 0 22px 50px rgba(16, 24, 40, 0.18);
+  text-align: center;
+  font-family: Montserrat, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.samakan-loader-spin {
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 12px;
+  border-radius: 999px;
+  border: 3px solid #ece7e1;
+  border-top-color: #ff6a2a;
+  animation: samakan-spin 0.7s linear infinite;
+}
+
+.samakan-loader-text {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.samakan-loader-sub {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+@keyframes samakan-spin {
+  to { transform: rotate(360deg); }
+}

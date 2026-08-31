@@ -3,16 +3,30 @@
 const Services = require("../models/services");
 
 async function renderServices(req, res) {
-  const header = await Services.getServicesHeader();
-  const items = await Services.getServicesItems();
+  try {
+    const header = await Services.getServicesHeader();
+    const items = await Services.getServicesItems();
 
-  res.render("admin/services", {
-    user: req.user,
-    header,
-    items,
-    saved: false,
-    error: null,
-  });
+    res.render("admin/services", {
+      user: req.user,
+      header,
+      items,
+      saved: false,
+      error: null,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).render("admin/services", {
+      user: req.user,
+      header: null,
+      items: [],
+      saved: false,
+      error:
+        err && err.code === "ER_NO_SUCH_TABLE"
+          ? "Tabel layanan belum ada di database. Restart CMS atau jalankan npm run schema."
+          : "Gagal memuat Services",
+    });
+  }
 }
 
 async function saveServicesHeader(req, res) {

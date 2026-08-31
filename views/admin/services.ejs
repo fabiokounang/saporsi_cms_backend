@@ -69,23 +69,7 @@
 
 <body>
 <div class="shell">
-  <aside>
-    <div class="brand">
-      <div class="logo"></div>
-      <div>
-        <h1>SAMAKAN CMS</h1>
-        <p>Company Profile Manager</p>
-      </div>
-    </div>
-    <!-- <nav>
-      <a class="navItem" href="/admin"><span class="dot"></span> Dashboard</a>
-      <a class="navItem" href="/admin/navbar"><span class="dot"></span> Navbar</a>
-      <a class="navItem" href="/admin/hero"><span class="dot"></span> Hero</a>
-      <a class="navItem" href="/admin/about"><span class="dot"></span> About Us</a>
-      <a class="navItem active" href="/admin/services"><span class="dot"></span> Services</a>
-      <a class="navItem" href="/admin/gallery"><span class="dot"></span> Gallery</a>
-    </nav> -->
-  </aside>
+  <%- include('../partials/admin-sidebar', { active: 'services' }) %>
 
   <main>
     <header class="topbar">
@@ -94,7 +78,6 @@
         <div class="sub">Kelola badge + title + subtitle + cards layanan (ID/EN).</div>
       </div>
       <div style="display:flex;align-items:center;">
-        <a class="logout" href="/admin">Back to Dashboard</a> &nbsp;&nbsp;
         <div class="userBox">
           <div class="avatar"><%= (user.name || 'A')[0].toUpperCase() %></div>
           <div class="userMeta">
@@ -107,6 +90,12 @@
     </header>
 
     <section class="content">
+      <% if (error) { %>
+        <div data-flash="error" class="card" style="border-color:rgba(159,18,57,.35);color:#9f1239;"><%= error %></div>
+      <% } %>
+      <% if (saved) { %>
+        <div data-flash="ok" class="card" style="border-color:rgba(22,163,74,.35);color:#166534;">Tersimpan.</div>
+      <% } %>
 
       <!-- HEADER -->
       <div class="card">
@@ -165,7 +154,7 @@
           </form>
         </div>
 
-        <form method="post" action="/admin/services/save" enctype="multipart/form-data">
+        <form method="post" action="/admin/services/save" enctype="multipart/form-data" data-loading="Mengunggah…">
           <div class="tableWrap">
             <table>
               <thead>
@@ -242,7 +231,7 @@
     if (!btn) return;
     const id = btn.dataset.id;
     if (!confirm("Hapus card layanan ini?")) return;
-    fetch(`/admin/services/${id}/delete`, { method:"POST" }).then(()=>location.reload());
+    samakanPost("/admin/services/" + id + "/delete");
   });
 </script>
 </body>

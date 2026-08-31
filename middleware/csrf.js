@@ -1,6 +1,7 @@
 "use strict";
 
 const crypto = require("crypto");
+const { CSRF_INVALID, wantsJson } = require("../utils/public-error");
 
 const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
 const TOKEN_RE = /^[a-f0-9]{64}$/;
@@ -49,10 +50,9 @@ function sentToken(req) {
 }
 
 function rejectCsrf(req, res) {
-  const wantsHtml = req.accepts("html") && !req.accepts("json");
   res.status(403);
-  if (wantsHtml) return res.send("Invalid CSRF token");
-  return res.json({ error: "Invalid CSRF token" });
+  if (wantsJson(req)) return res.json({ error: CSRF_INVALID });
+  return res.send(CSRF_INVALID);
 }
 
 function verifyCsrf(req, res, next) {
@@ -73,7 +73,7 @@ function injectCsrfHtml(req, res, next) {
     if (token && typeof body === "string" && body.includes("<head>") && !body.includes('name="csrf-token"')) {
       body = body.replace(
         "<head>",
-        `<head>\n<meta name="csrf-token" content="${token}">\n<script src="/public/js/csrf.js" defer></script>`
+        `<head>\n<meta name="csrf-token" content="${token}">\n<link rel="stylesheet" href="/public/css/toast.css">\n<script src="/public/js/toast.js" defer></script>\n<script src="/public/js/csrf.js" defer></script>`
       );
       body = body.replace(/<form\b([^>]*\bmethod\s*=\s*['"]post['"][^>]*)>/gi, (open) => {
         return `${open}<input type="hidden" name="_csrf" value="${token}">`;

@@ -373,15 +373,7 @@
 <body>
   <div class="shell">
 
-    <aside>
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>SAMAKAN CMS</h1>
-          <p>Company Profile Manager</p>
-        </div>
-      </div>
-    </aside>
+    <%- include('../partials/admin-sidebar', { active: 'how-it-works' }) %>
     <main>
       <header class="topbar">
         <div>
@@ -390,7 +382,6 @@
         </div>
 
         <div style="display:flex;align-items:center;">
-          <a class="logout" href="/admin">Back to Dashboard</a> &nbsp;&nbsp;
 
           <div class="userBox">
             <div class="avatar"><%= (user.name || 'A')[0].toUpperCase() %></div>

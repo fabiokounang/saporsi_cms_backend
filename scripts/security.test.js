@@ -76,7 +76,34 @@ describe("security companyprofile CMS", () => {
       body: { title_id: "HACK" },
     });
     assert.equal(res.status, 403);
-    assert.match(res.text, /csrf/i);
+    assert.match(res.text, /sesi|csrf/i);
+  });
+
+  it("API JSON tidak membocorkan error database", async () => {
+    const res = await request(ctx.base, "/api/public/site", {
+      headers: { Accept: "application/json" },
+    });
+    assert.ok(res.status === 200 || res.status >= 400);
+    if (res.status >= 400) {
+      const body = JSON.parse(res.text);
+      assert.equal(typeof body.error, "string");
+      assert.doesNotMatch(body.error, /ER_|ECONN|samakan_cms|hero|SQL|stack/i);
+    }
+  });
+
+  it("404 menampilkan pesan yang jelas, bukan teks mentah", async () => {
+    const res = await request(ctx.base, "/admin/services/does-not-exist", { token: adminToken() });
+    assert.equal(res.status, 404);
+    assert.match(res.text, /tidak ditemukan/i);
+    assert.doesNotMatch(res.text, /Internal Server Error/);
+  });
+
+  it("413 entity too large mengembalikan pesan file terlalu besar", async () => {
+    const err = { type: "entity.too.large", status: 413, message: "request entity too large" };
+    const { FILE_TOO_LARGE, explainError } = require("../utils/public-error");
+    const mapped = explainError(err);
+    assert.equal(mapped.status, 413);
+    assert.equal(mapped.message, FILE_TOO_LARGE);
   });
 
   it("menolak login tanpa CSRF", async () => {
